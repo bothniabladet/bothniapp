@@ -2,6 +2,7 @@ package se.ltu.student
 
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import se.ltu.student.modules.moduleHealthCheck
 import se.ltu.student.plugins.*
 
 fun main() {
@@ -12,5 +13,7 @@ fun main() {
         configureMonitoring()
         configureTemplating()
         configureSerialization()
+
+        moduleHealthCheck()
     }.start(wait = true)
 }
