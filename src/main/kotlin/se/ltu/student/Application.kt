@@ -7,12 +7,12 @@ import se.ltu.student.plugins.*
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
+        configureTemplating()
         configureRouting()
         configureSecurity()
         configureHTTP()
         configureMonitoring()
         configureSerialization()
-        configureTemplating()
 
         moduleHealthCheck()
     }.start(wait = true)
