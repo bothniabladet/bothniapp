@@ -6,6 +6,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.response.*
+import se.ltu.student.dao.dao
 
 fun Application.configureRouting() {
 
@@ -19,7 +20,7 @@ fun Application.configureRouting() {
             get("profile") {
                 // Profile
                 val userSession = call.principal<UserSession>()
-                call.respond(FreeMarkerContent("profile.ftl", mapOf("user" to userSession)))
+                call.respond(FreeMarkerContent("profile.ftl", mapOf("user" to userSession?.user)))
             }
         }
 
@@ -36,7 +37,6 @@ fun Application.configureRouting() {
                 call.respond(FreeMarkerContent("search.ftl", mapOf("query" to call.parameters["query"])))
             }
         }
-
 
         route("api") {
             // API routes

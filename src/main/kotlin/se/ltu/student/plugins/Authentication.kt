@@ -3,12 +3,16 @@ package se.ltu.student.plugins
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
+import io.ktor.server.request.*
 
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
+import io.ktor.server.util.*
+import se.ltu.student.dao.dao
+import se.ltu.student.models.User
 
-data class UserSession(val name: String) : Principal
+data class UserSession(val name: String, val user: User) : Principal
 
 fun Application.configureAuthentication() {
     install(Authentication) {
@@ -16,8 +20,10 @@ fun Application.configureAuthentication() {
             userParamName = "username"
             passwordParamName = "password"
             validate { credentials ->
-                if (credentials.name == "jetbrains" && credentials.password == "foobar") {
-                    UserIdPrincipal(credentials.name)
+                val user = dao.user.authenticate(credentials.name, credentials.password)
+
+                if (user != null) {
+                    UserSession(credentials.name, user)
                 } else {
                     null
                 }
@@ -26,11 +32,7 @@ fun Application.configureAuthentication() {
 
         session<UserSession>("auth-session") {
             validate { session ->
-                if(session.name.startsWith("jet")) {
-                    session
-                } else {
-                    null
-                }
+                session
             }
             challenge {
                 call.respondRedirect("/login")
@@ -38,6 +40,7 @@ fun Application.configureAuthentication() {
         }
     }
 
+    // Login
     routing {
         get("/login") {
             call.respond(FreeMarkerContent("auth/login.ftl", null))
@@ -45,12 +48,49 @@ fun Application.configureAuthentication() {
 
         authenticate("auth-form") {
             post("/login") {
-                val userName = call.principal<UserIdPrincipal>()?.name.toString()
-                call.sessions.set(UserSession(name = userName))
+                call.sessions.set(call.principal<UserSession>())
                 call.respondRedirect("/")
             }
         }
+    }
 
+    // Register
+    routing {
+
+        route("/register") {
+            get {
+                call.respond(FreeMarkerContent("auth/register.ftl", null))
+            }
+
+            post {
+                val formParameters = call.receiveParameters()
+
+                val email = formParameters.getOrFail("email")
+                val repeatEmail = formParameters.getOrFail("repeatEmail")
+
+                if (!repeatEmail.contentEquals(email)) {
+                    call.respond("Email does not match.")
+                }
+
+                val password = formParameters.getOrFail("password")
+                val repeatPassword = formParameters.getOrFail("repeatPassword")
+
+                if (!repeatPassword.contentEquals(password)) {
+                    call.respond("Password does not match.")
+                }
+
+                val givenName = formParameters.getOrFail("givenName")
+                val familyName = formParameters.getOrFail("familyName")
+
+                val user = dao.user.createUser(givenName, familyName, email, password)
+
+                call.respondRedirect("/login?registered=true")
+            }
+        }
+    }
+
+    // Logout
+    routing {
         get("/logout") {
             call.sessions.clear<UserSession>()
             call.respondRedirect("/login")
