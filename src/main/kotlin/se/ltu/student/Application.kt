@@ -8,8 +8,7 @@ import se.ltu.student.plugins.*
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
-        DatabaseFactory.init()
-
+        configureDatabase()
         configureTemplating()
         configureRouting()
         configureSecurity()
