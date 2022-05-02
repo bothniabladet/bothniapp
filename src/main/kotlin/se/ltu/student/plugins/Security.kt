@@ -1,27 +1,18 @@
 package se.ltu.student.plugins
 
-import io.ktor.server.auth.*
-import io.ktor.util.*
-import io.ktor.server.sessions.*
 import io.ktor.server.application.*
-import io.ktor.server.response.*
-import io.ktor.server.request.*
-import io.ktor.server.routing.*
+import io.ktor.server.sessions.*
+import io.ktor.util.*
 
 fun Application.configureSecurity() {
+    val secretEncryptKey = hex(environment.config.propertyOrNull("ktor.security.secretEncryptKey")?.getString() ?: "00112233445566778899aabbccddeeff")
+    val secretSignKey = hex(environment.config.propertyOrNull("ktor.security.secretSignKey")?.getString() ?: "6819b57a326945c1968f45236589")
 
-    data class MySession(val count: Int = 0)
     install(Sessions) {
-        cookie<MySession>("MY_SESSION") {
-            cookie.extensions["SameSite"] = "lax"
-        }
-    }
-
-    routing {
-        get("/session/increment") {
-            val session = call.sessions.get<MySession>() ?: MySession()
-            call.sessions.set(session.copy(count = session.count + 1))
-            call.respondText("Counter is ${session.count}. Refresh to increment.")
+        cookie<UserSession>("user_session", SessionStorageMemory()) {
+            cookie.path = "/"
+            cookie.maxAgeInSeconds = 10
+            transform(SessionTransportTransformerEncrypt(secretEncryptKey, secretSignKey))
         }
     }
 }

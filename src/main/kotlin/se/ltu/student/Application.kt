@@ -13,6 +13,7 @@ fun main() {
         configureHTTP()
         configureMonitoring()
         configureSerialization()
+        configureAuthentication()
 
         moduleHealthCheck()
     }.start(wait = true)

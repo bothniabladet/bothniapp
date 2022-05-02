@@ -3,6 +3,7 @@ package se.ltu.student.plugins
 import io.ktor.server.routing.*
 import io.ktor.server.http.content.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.response.*
 
@@ -14,8 +15,12 @@ fun Application.configureRouting() {
             call.respond(FreeMarkerContent("index.ftl", null))
         }
 
-        get("profile") {
-            // Profile
+        authenticate("auth-session") {
+            get("profile") {
+                // Profile
+                val userSession = call.principal<UserSession>()
+                call.respond(FreeMarkerContent("profile.ftl", mapOf("user" to userSession)))
+            }
         }
 
         route("browse") {
