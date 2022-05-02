@@ -43,10 +43,6 @@ class DAOUser {
         val passwordHash = result.map { it[Users.passwordHash] }.singleOrNull()
         val user = result.map(::resultRowToUser).singleOrNull()
 
-        println(result)
-        println(user)
-        println(passwordHash)
-
         when (!passwordHash.isNullOrEmpty() && BCrypt.verifyer().verify(password.toCharArray(), passwordHash).verified) {
             true -> user
             else -> null
