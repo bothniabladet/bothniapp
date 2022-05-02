@@ -12,6 +12,7 @@ fun main() {
         configureHTTP()
         configureMonitoring()
         configureSerialization()
+        configureTemplating()
 
         moduleHealthCheck()
     }.start(wait = true)
