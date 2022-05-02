@@ -16,28 +16,6 @@ fun Application.configureRouting() {
             call.respond(FreeMarkerContent("index.ftl", null))
         }
 
-        authenticate("auth-session") {
-            get("profile") {
-                // Profile
-                val userSession = call.principal<UserSession>()
-                call.respond(FreeMarkerContent("profile.ftl", mapOf("user" to userSession?.user)))
-            }
-        }
-
-        route("browse") {
-            // Browse
-            get {
-                call.respond(FreeMarkerContent("browse/index.ftl", null))
-            }
-        }
-
-        route("search") {
-            // Search
-            get {
-                call.respond(FreeMarkerContent("search.ftl", mapOf("query" to call.parameters["query"])))
-            }
-        }
-
         route("api") {
             // API routes
         }

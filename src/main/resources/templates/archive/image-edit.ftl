@@ -1,4 +1,4 @@
 <#import "../_layout.ftl" as layout />
 <@layout.header>
-    <h1>Browse</h1>
+    <h1>Image (edit)</h1>
 </@layout.header>
