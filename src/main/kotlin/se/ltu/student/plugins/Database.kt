@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.Database
 
 object DB {
     val connection by lazy {
-        Database.connect()
+        Database.connect("", "", "", "")
     }
 }
 

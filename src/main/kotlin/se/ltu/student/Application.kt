@@ -11,7 +11,6 @@ fun main() {
         configureSecurity()
         configureHTTP()
         configureMonitoring()
-        configureTemplating()
         configureSerialization()
 
         moduleHealthCheck()
