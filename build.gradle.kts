@@ -6,15 +6,13 @@ plugins {
     application
     kotlin("jvm") version "1.6.21"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.21"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "se.ltu.student"
 version = "0.0.1"
 application {
-    mainClass.set("se.ltu.student.ApplicationKt")
-
-    val isDevelopment: Boolean = true
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 repositories {
