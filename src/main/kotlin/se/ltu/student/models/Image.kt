@@ -15,14 +15,16 @@ class Image(id: EntityID<UUID>) : UUIDEntity(id) {
     var size by Images.size
     var width by Images.width
     var height by Images.height
+    var category by Category optionalReferencedOn Images.category
 }
 
 object Images : UUIDTable() {
-    val parentID = reference("parent_id", id).nullable()
+    val parent = reference("parent", id).nullable()
     val caption = varchar("caption", 256)
     val description = text("description").nullable()
     val path = varchar("path", 256).uniqueIndex().nullable()
     val size = integer("size")
     val width = integer("width").default(0)
     val height = integer("height").default(0)
+    val category = reference("category", Categories).nullable()
 }
