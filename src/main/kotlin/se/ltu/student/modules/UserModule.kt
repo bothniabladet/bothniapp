@@ -12,12 +12,12 @@ fun Application.configureModuleUser() {
         authenticate("auth-session") {
             route("/profile") {
                 get {
-                    val user = call.principal<UserSession>()?.user
-                    call.respond(FreeMarkerContent("profile/index.ftl", mapOf("user" to user)))
+                    val userProfile = call.principal<UserSession>()?.userProfile
+                    call.respond(FreeMarkerContent("profile/index.ftl", mapOf("userProfile" to userProfile)))
                 }
                 get("/edit") {
-                    val user = call.principal<UserSession>()?.user
-                    call.respond(FreeMarkerContent("profile/edit.ftl", mapOf("user" to user)))
+                    val userProfile = call.principal<UserSession>()?.userProfile
+                    call.respond(FreeMarkerContent("profile/edit.ftl", mapOf("userProfile" to userProfile)))
                 }
             }
         }

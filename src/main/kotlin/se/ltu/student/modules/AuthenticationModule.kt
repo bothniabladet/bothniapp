@@ -1,5 +1,6 @@
 package se.ltu.student.modules
 
+import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
@@ -8,8 +9,13 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.util.*
-import se.ltu.student.dao.dao
+import org.jetbrains.exposed.sql.transactions.transaction
+import se.ltu.student.models.User
 import se.ltu.student.plugins.UserSession
+
+fun hashPassword(password: String): String {
+    return BCrypt.withDefaults().hashToString(12, password.toCharArray())
+}
 
 fun Application.configureModuleAuthentication() {
     // Login
@@ -63,13 +69,18 @@ fun Application.configureModuleAuthentication() {
                 val givenName = formParameters.getOrFail("givenName")
                 val familyName = formParameters.getOrFail("familyName")
 
-                val user = dao.user.createUser(givenName, familyName, email, password)
+                val passwordHash = hashPassword(password)
 
-                if (user != null) {
-                    call.respondRedirect("/login?registered=true")
-                } else {
-                    call.respondRedirect("/register?registered=false")
+                transaction {
+                    User.new {
+                        this.givenName = givenName
+                        this.familyName = familyName
+                        this.email = email
+                        this.passwordHash = passwordHash
+                    }
                 }
+
+                call.respondRedirect("/login?registered=true")
             }
         }
     }

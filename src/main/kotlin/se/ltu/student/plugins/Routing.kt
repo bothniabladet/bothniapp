@@ -3,10 +3,8 @@ package se.ltu.student.plugins
 import io.ktor.server.routing.*
 import io.ktor.server.http.content.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.response.*
-import se.ltu.student.dao.dao
 
 fun Application.configureRouting() {
 
