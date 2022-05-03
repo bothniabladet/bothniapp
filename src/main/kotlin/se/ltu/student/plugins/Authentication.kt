@@ -1,13 +1,22 @@
 package se.ltu.student.plugins
 
+import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 
 import io.ktor.server.response.*
-import se.ltu.student.dao.dao
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.models.User
+import se.ltu.student.models.Users
 
-data class UserSession(val name: String, val user: User) : Principal
+fun verifyPassword(password: String, passwordHash: CharArray): Boolean {
+    return BCrypt.verifyer().verify(password.toCharArray(), passwordHash).verified
+}
+
+data class UserProfile(val givenName: String, val familyName: String, val email: String)
+
+data class UserSession(val name: String, val userProfile: UserProfile) : Principal
 
 fun Application.configureAuthentication() {
     install(Authentication) {
@@ -15,10 +24,17 @@ fun Application.configureAuthentication() {
             userParamName = "username"
             passwordParamName = "password"
             validate { credentials ->
-                val user = dao.user.authenticate(credentials.name, credentials.password)
+                val user: User? = transaction {
+                    val id = Users.select { Users.email eq credentials.name }.map { it[Users.id] }.firstOrNull()
+                    if (id != null) {
+                        User.findById(id)
+                    } else {
+                        null
+                    }
+                }
 
                 if (user != null) {
-                    UserSession(credentials.name, user)
+                    UserSession(credentials.name, UserProfile(user.givenName, user.familyName, user.email))
                 } else {
                     null
                 }
