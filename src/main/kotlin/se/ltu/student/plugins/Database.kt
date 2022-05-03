@@ -4,5 +4,5 @@ import io.ktor.server.application.*
 import se.ltu.student.dao.DatabaseFactory
 
 fun Application.configureDatabase() {
-    DatabaseFactory.init()
+    DatabaseFactory.init(environment)
 }
