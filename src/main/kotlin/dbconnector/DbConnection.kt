@@ -1,4 +1,0 @@
-package dbconnector
-
-class DbConnection {
-}
