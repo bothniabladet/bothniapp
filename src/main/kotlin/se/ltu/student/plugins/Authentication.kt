@@ -9,12 +9,13 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.models.User
 import se.ltu.student.models.Users
+import java.util.UUID
 
 fun verifyPassword(password: String, passwordHash: CharArray): Boolean {
     return BCrypt.verifyer().verify(password.toCharArray(), passwordHash).verified
 }
 
-data class UserProfile(val givenName: String, val familyName: String, val email: String)
+data class UserProfile(val id: UUID, val givenName: String, val familyName: String, val email: String)
 
 data class UserSession(val name: String, val userProfile: UserProfile) : Principal
 
@@ -34,7 +35,7 @@ fun Application.configureAuthentication() {
                 }
 
                 if (user != null) {
-                    UserSession(credentials.name, UserProfile(user.givenName, user.familyName, user.email))
+                    UserSession(credentials.name, UserProfile(user.id.value, user.givenName, user.familyName, user.email))
                 } else {
                     null
                 }
