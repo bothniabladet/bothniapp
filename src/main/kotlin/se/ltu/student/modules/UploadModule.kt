@@ -8,11 +8,14 @@ import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.jetbrains.exposed.dao.load
+import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.models.*
 import se.ltu.student.plugins.UserSession
 import java.io.File
+import java.util.*
 
 fun Application.configureModuleUpload() {
     routing {
@@ -32,12 +35,7 @@ fun Application.configureModuleUpload() {
                     // Get user
                     val userProfile = call.principal<UserSession>()?.userProfile ?: throw Error("Unauthorized")
                     val user = transaction { User.findById(userProfile.id) }
-
-                    val upload = transaction {
-                        Upload.new {
-                            this.user = user
-                        }
-                    }
+                    var images = arrayListOf<Image>()
 
                     val multipartData = call.receiveMultipart()
                     multipartData.forEachPart { part ->
@@ -52,18 +50,13 @@ fun Application.configureModuleUpload() {
                                     Image.new {
                                         caption = fileName
                                         size = fileBytes.size
-                                        path = "uploads/${id}.${fileExtension}"
+                                        path = "${id}.${fileExtension}"
                                     }
                                 }
-                                fileName = "${image.id}.${fileExtension}"
+                                images.add(image)
 
-                                // Register image entry to upload
-                                transaction {
-                                    ImageUpload.new {
-                                        this.upload = upload
-                                        this.image = image
-                                    }
-                                }
+                                // Set the new filename
+                                fileName = "${image.id}.${fileExtension}"
 
                                 // Persist file to disk
                                 File("uploads/$fileName").writeBytes(fileBytes)
@@ -71,7 +64,26 @@ fun Application.configureModuleUpload() {
                             else -> {}
                         }
                     }
-                    call.respond(HttpStatusCode.OK)
+
+                    val upload = transaction {
+                        Upload.new {
+                            this.user = user
+                            this.images = SizedCollection(images)
+                        }
+                    }
+
+                    call.respondRedirect("/upload/${upload.id.value}")
+                }
+
+                get("/{id}") {
+                    val id = UUID.fromString(call.parameters["id"])
+                    val upload = transaction {
+                        Upload.findById(id)
+                    }
+                    val images = transaction {
+                        upload?.images?.map { it }
+                    }
+                    call.respond(FreeMarkerContent("upload/manage.ftl", mapOf("upload" to upload, "images" to images)))
                 }
             }
         }

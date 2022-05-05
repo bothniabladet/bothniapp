@@ -25,16 +25,16 @@ fun Application.configureAuthentication() {
             userParamName = "username"
             passwordParamName = "password"
             validate { credentials ->
-                val user: User? = transaction {
+                val user: User = transaction {
                     val id = Users.select { Users.email eq credentials.name }.map { it[Users.id] }.firstOrNull()
                     if (id != null) {
                         User.findById(id)
                     } else {
                         null
                     }
-                }
+                } ?: throw Error("Incorrect username or password.")
 
-                if (user != null) {
+                if (verifyPassword(credentials.password, user.passwordHash.toCharArray())) {
                     UserSession(credentials.name, UserProfile(user.id.value, user.givenName, user.familyName, user.email))
                 } else {
                     null

@@ -4,11 +4,8 @@ import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
 import org.jetbrains.exposed.sql.transactions.experimental.*
-import se.ltu.student.models.Users
 import io.ktor.server.application.*
-import se.ltu.student.models.Categories
-import se.ltu.student.models.Image
-import se.ltu.student.models.Images
+import se.ltu.student.models.*
 
 object DatabaseFactory {
     fun init(environment: ApplicationEnvironment) {
@@ -19,8 +16,12 @@ object DatabaseFactory {
         val database = Database.connect(url = jdbcURL, driver = driverClassName, user = user, password = password)
         transaction(database) {
             SchemaUtils.create(Users)
+
             SchemaUtils.create(Categories)
             SchemaUtils.create(Images)
+
+            SchemaUtils.create(Uploads)
+            SchemaUtils.create(ImageUploads)
         }
     }
 
