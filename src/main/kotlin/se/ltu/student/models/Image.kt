@@ -70,5 +70,5 @@ object Images : UUIDTable() {
     val width = integer("width").default(0)
     val height = integer("height").default(0)
     val category = reference("category", Categories).nullable()
-    val metadata = jsonb<ImageMetadata>("metadata", serializer()).nullable()
+    val metadata = jsonb<ImageMetadata>("metadata", serializer())
 }

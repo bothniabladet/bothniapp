@@ -10,6 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
+import se.ltu.student.extensions.respondFMT
 import se.ltu.student.models.*
 import se.ltu.student.plugins.UserSession
 import java.io.File
@@ -27,7 +28,7 @@ fun Application.configureModuleUpload() {
                             Uploads.user eq userProfile.id
                         }.map { it }
                     }
-                    call.respond(FreeMarkerContent("upload/index.ftl", mapOf("uploads" to uploads, "uploadCount" to uploads.count())))
+                    call.respondFMT(FreeMarkerContent("upload/index.ftl", mapOf("uploads" to uploads, "uploadCount" to uploads.count())))
                 }
 
                 post {
@@ -50,6 +51,7 @@ fun Application.configureModuleUpload() {
                                         caption = fileName
                                         size = fileBytes.size
                                         path = "${id}.${fileExtension}"
+                                        metadata = ImageMetadata(mapOf())
                                     }
                                 }
                                 images.add(image)
@@ -93,7 +95,7 @@ fun Application.configureModuleUpload() {
                     val upload = transaction {
                         Upload.findById(id)?.toModel()
                     }
-                    call.respond(FreeMarkerContent("upload/manage.ftl", mapOf("upload" to upload)))
+                    call.respondFMT(FreeMarkerContent("upload/manage.ftl", mapOf("upload" to upload)))
                 }
 
                 post("/{id}/delete") {

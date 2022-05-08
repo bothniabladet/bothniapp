@@ -10,6 +10,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import se.ltu.student.extensions.respondFMT
 import se.ltu.student.models.User
 import se.ltu.student.plugins.UserSession
 
@@ -21,11 +22,10 @@ fun Application.configureModuleAuthentication() {
     // Login
     routing {
         get("/login") {
-            val user = call.principal<UserSession>()
-            if (user != null) {
+            if (call.sessions.get<UserSession>() != null) {
                 call.respondRedirect("/profile")
             } else {
-                call.respond(FreeMarkerContent("authentication/login.ftl", null))
+                call.respondFMT(FreeMarkerContent("authentication/login.ftl", null))
             }
         }
 
@@ -41,11 +41,10 @@ fun Application.configureModuleAuthentication() {
     routing {
         route("/register") {
             get {
-                val user = call.principal<UserSession>()
-                if (user != null) {
+                if (call.sessions.get<UserSession>() != null) {
                     call.respondRedirect("/profile")
                 } else {
-                    call.respond(FreeMarkerContent("authentication/register.ftl", null))
+                    call.respondFMT(FreeMarkerContent("authentication/register.ftl", null))
                 }
             }
 
@@ -80,7 +79,7 @@ fun Application.configureModuleAuthentication() {
                     }
                 }
 
-                call.respondRedirect("/login?registered=true")
+                call.respondRedirect("/login")
             }
         }
     }

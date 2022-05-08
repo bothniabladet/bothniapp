@@ -29,16 +29,12 @@
                         <li><a href="/upload" class="nav-link px-2 link-dark">Upload</a></li>
                     </ul>
 
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                        <input type="search" class="form-control" placeholder="Search..." aria-label="Search" disabled>
-                    </form>
-
+                    <#if (state.isAuthenticated)!false == true>
                     <div class="dropdown text-end">
                         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle fs-4"></i>
                         </a>
                         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="/register">Register</a></li>
                             <li><a class="dropdown-item" href="/profile">Profile</a></li>
                             <li><a class="dropdown-item" href="/profile/edit">Settings</a></li>
 
@@ -46,6 +42,12 @@
                             <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                         </ul>
                     </div>
+                    <#else>
+                    <div class="text-end">
+                        <a class="btn btn-light border px-4" href="/login">Sign in</a>
+                        <a class="btn btn-primary px-4" href="/register">Register</a>
+                    </div>
+                    </#if>
                 </div>
             </div>
         </header>

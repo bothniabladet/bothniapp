@@ -5,13 +5,14 @@ import io.ktor.server.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.response.*
+import se.ltu.student.extensions.respondFMT
 
 fun Application.configureRouting() {
 
 
     routing {
         get("/") {
-            call.respond(FreeMarkerContent("index.ftl", null))
+            call.respondFMT(FreeMarkerContent("index.ftl", null))
         }
 
         route("api") {

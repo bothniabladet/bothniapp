@@ -8,6 +8,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import se.ltu.student.extensions.respondFMT
 import se.ltu.student.models.Image
 import java.io.File
 import java.util.*
@@ -17,7 +18,7 @@ fun Application.configureModuleArchive() {
         authenticate("auth-session") {
             route("/archive") {
                 get {
-                    call.respond(FreeMarkerContent("archive/index.ftl", null))
+                    call.respondFMT(FreeMarkerContent("archive/index.ftl", null))
                 }
 
                 get("/image/{id}/preview") {

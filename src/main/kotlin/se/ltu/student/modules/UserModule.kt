@@ -5,6 +5,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import se.ltu.student.extensions.respondFMT
 import se.ltu.student.plugins.UserSession
 
 fun Application.configureModuleUser() {
@@ -13,11 +14,11 @@ fun Application.configureModuleUser() {
             route("/profile") {
                 get {
                     val userProfile = call.principal<UserSession>()?.userProfile
-                    call.respond(FreeMarkerContent("profile/index.ftl", mapOf("userProfile" to userProfile)))
+                    call.respondFMT(FreeMarkerContent("profile/index.ftl", mapOf("userProfile" to userProfile)))
                 }
                 get("/edit") {
                     val userProfile = call.principal<UserSession>()?.userProfile
-                    call.respond(FreeMarkerContent("profile/edit.ftl", mapOf("userProfile" to userProfile)))
+                    call.respondFMT(FreeMarkerContent("profile/edit.ftl", mapOf("userProfile" to userProfile)))
                 }
             }
         }
