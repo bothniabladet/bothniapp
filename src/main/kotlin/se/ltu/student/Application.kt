@@ -22,4 +22,5 @@ fun Application.module() {
     configureModuleArchive()
     configureModuleSearch()
     configureModuleUpload()
+    configureModuleConfig()
 }

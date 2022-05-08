@@ -56,24 +56,8 @@ fun Application.configureModuleUpload() {
                                 }
                                 images.add(image)
 
-                                // Set the new filename
-                                fileName = "${image.id}.${fileExtension}"
-
-                                // Persist file to disk
-                                val file = File("uploads/$fileName")
-                                file.writeBytes(fileBytes)
-
-                                // Fetch metadata
-                                val metadata: com.drew.metadata.Metadata = ImageMetadataReader.readMetadata(file)
-                                val tags = metadata.directories.associate { dir ->
-                                    dir.name to dir.tags.filter { tag ->
-                                        !tag.tagName.contains("Unknown")
-                                    }.associate { tag -> tag.tagName to tag.description }
-                                }
-
-                                // Set metadata
                                 transaction {
-                                    image.metadata = ImageMetadata(tags)
+                                    image.writeImage(fileBytes, fileExtension)
                                 }
                             }
                             else -> {}

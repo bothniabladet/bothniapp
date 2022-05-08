@@ -1,5 +1,6 @@
 package se.ltu.student.models
 
+import com.drew.imaging.ImageMetadataReader
 import kotlinx.serialization.serializer
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
@@ -22,16 +23,19 @@ data class ImageModel constructor(
     val height: Int,
     val category: CategoryModel?,
     val metadata: ImageMetadata?,
-    val variations: List<ImageModel>
+    val variants: List<ImageModel>
 )
 
 // Workaround for recursive initializer violation
 fun resolve(image: Image?): ImageModel? {
-    return image?.toModel()
+    return image?.toModel(false)
 }
 
 // Workaround for recursive initializer violation
-fun resolve(images: SizedIterable<Image>): List<ImageModel> {
+fun resolve(parent: Image?, images: SizedIterable<Image>): List<ImageModel> {
+    if (parent != null) {
+        return listOf()
+    }
     return images.map(Image::toModel)
 }
 
@@ -48,14 +52,52 @@ class Image(id: EntityID<UUID>) : UUIDEntity(id) {
     var category by Category optionalReferencedOn Images.category
     var metadata by Images.metadata
     var upload by Upload via ImageUploads
-    val variations by Image optionalReferrersOn Images.parent
+    val variants by Image optionalReferrersOn Images.parent
+
+    fun writeImage(bytes: ByteArray, extension: String) {
+        // Set the new filename
+        this.path = "${this.id}.${extension}"
+
+        // Persist file to disk
+        val file = File("uploads/$path")
+        file.writeBytes(bytes)
+
+        // Set metadata
+        this.setMetadata(file)
+    }
+
+    private fun setMetadata(file: File) {
+        val metadata: com.drew.metadata.Metadata = ImageMetadataReader.readMetadata(file)
+        val tags = metadata.directories.associate { dir ->
+            dir.name to dir.tags.filter { tag ->
+                !tag.tagName.contains("Unknown")
+            }.associate { tag -> tag.tagName to tag.description }
+        }
+
+        for (dir in tags) {
+            for (tag in dir.value) {
+                if (tag.key.contains("Image Width")) {
+                    this.width = tag.value.toInt()
+                }
+                if (tag.key.contains("Image Height")) {
+                    this.height = tag.value.toInt()
+                }
+                if (this.width > 0 && this.height > 0)
+                    break
+            }
+            if (this.width > 0 && this.height > 0)
+                break
+        }
+
+        this.metadata = ImageMetadata(tags)
+    }
 
     override fun delete() {
         File("uploads/$path").delete()
         super.delete()
     }
 
-    fun toModel() = ImageModel(id.toString(), resolve(parent), caption, description, path, size, width, height, category?.toModel(), metadata, resolve(variations))
+    fun toModel(loadChildren: Boolean = true) = ImageModel(id.toString(), resolve(parent), caption, description, path, size, width, height, category?.toModel(), metadata,  if (loadChildren) resolve(parent, variants) else listOf())
 }
 
 @kotlinx.serialization.Serializable

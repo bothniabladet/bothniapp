@@ -8,21 +8,7 @@
             <#list upload.images as image>
                 <li>
                     <img class="img-fluid" src="/archive/image/${image.id}/preview" />
-                    Image ${image.id}
-                    <ul>
-                        <#if image.metadata??>
-                            <#list image.metadata.values as directory, tags>
-                                <li>
-                                    ${directory}
-                                    <ul>
-                                        <#list tags as key, value>
-                                            <li>${key}: ${value}</li>
-                                        </#list>
-                                    </ul>
-                                </li>
-                            </#list>
-                        </#if>
-                    </ul>
+                    <a href="/archive/image/${image.id}">Image ${image.id}</a>
                 </li>
             </#list>
         </ul>

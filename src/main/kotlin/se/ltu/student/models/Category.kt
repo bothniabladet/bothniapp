@@ -1,13 +1,13 @@
 package se.ltu.student.models
 
-import org.jetbrains.exposed.dao.UUIDEntity
-import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.*
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
 import java.util.*
 
 @kotlinx.serialization.Serializable
 data class CategoryModel constructor(
+    val id: String,
     val parent: CategoryModel?,
     val name: String,
     val description: String?
@@ -25,7 +25,7 @@ class Category(id: EntityID<UUID>) : UUIDEntity(id) {
     var name by Categories.name
     var description by Categories.description
 
-    fun toModel() = CategoryModel(resolve(parent), name, description)
+    fun toModel() = CategoryModel(id.toString(), resolve(parent), name, description)
 }
 
 object Categories : UUIDTable() {

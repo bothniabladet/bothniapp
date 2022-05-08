@@ -1,5 +1,5 @@
 <#-- @ftlvariable name="uploadCount" type="Long" -->
-<#-- @ftlvariable name="uploads" type="kotlin.sequences.Sequence<se.ltu.student.models.Upload>" -->
+<#-- @ftlvariable name="uploads" type="kotlin.collections.List<se.ltu.student.models.UploadModel>" -->
 <#import "../_layout.ftl" as layout />
 <@layout.header>
     <h1>Upload</h1>
