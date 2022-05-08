@@ -1,6 +1,6 @@
 package se.ltu.student.modules
 
-import io.ktor.http.*
+import com.drew.imaging.ImageMetadataReader
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -8,14 +8,13 @@ import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.jetbrains.exposed.dao.load
 import org.jetbrains.exposed.sql.SizedCollection
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.models.*
 import se.ltu.student.plugins.UserSession
 import java.io.File
 import java.util.*
+
 
 fun Application.configureModuleUpload() {
     routing {
@@ -35,7 +34,7 @@ fun Application.configureModuleUpload() {
                     // Get user
                     val userProfile = call.principal<UserSession>()?.userProfile ?: throw Error("Unauthorized")
                     val user = transaction { User.findById(userProfile.id) }
-                    var images = arrayListOf<Image>()
+                    val images = arrayListOf<Image>()
 
                     val multipartData = call.receiveMultipart()
                     multipartData.forEachPart { part ->
@@ -59,7 +58,21 @@ fun Application.configureModuleUpload() {
                                 fileName = "${image.id}.${fileExtension}"
 
                                 // Persist file to disk
-                                File("uploads/$fileName").writeBytes(fileBytes)
+                                val file = File("uploads/$fileName")
+                                file.writeBytes(fileBytes)
+
+                                // Fetch metadata
+                                val metadata: com.drew.metadata.Metadata = ImageMetadataReader.readMetadata(file)
+                                val tags = metadata.directories.associate { dir ->
+                                    dir.name to dir.tags.filter { tag ->
+                                        !tag.tagName.contains("Unknown")
+                                    }.associate { tag -> tag.tagName to tag.description }
+                                }
+
+                                // Set metadata
+                                transaction {
+                                    image.metadata = ImageMetadata(tags)
+                                }
                             }
                             else -> {}
                         }
@@ -78,12 +91,21 @@ fun Application.configureModuleUpload() {
                 get("/{id}") {
                     val id = UUID.fromString(call.parameters["id"])
                     val upload = transaction {
-                        Upload.findById(id)
+                        Upload.findById(id)?.toModel()
                     }
-                    val images = transaction {
-                        upload?.images?.map { it }
+                    call.respond(FreeMarkerContent("upload/manage.ftl", mapOf("upload" to upload)))
+                }
+
+                post("/{id}/delete") {
+                    val id = UUID.fromString(call.parameters["id"])
+                    transaction {
+                        val upload = Upload.findById(id) ?: throw Error("No such upload.")
+                        upload.images.forEach {
+                            it.delete()
+                        }
+                        upload.delete()
                     }
-                    call.respond(FreeMarkerContent("upload/manage.ftl", mapOf("upload" to upload, "images" to images)))
+                    call.respondRedirect("/upload")
                 }
             }
         }
