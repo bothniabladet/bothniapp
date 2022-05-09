@@ -1,28 +1,33 @@
 <#-- @ftlvariable name="uploadCount" type="Long" -->
 <#-- @ftlvariable name="uploads" type="kotlin.collections.List<se.ltu.student.models.UploadModel>" -->
+<#import "../directives/section.ftl" as section />
 <#import "../_layout.ftl" as layout />
+
 <@layout.header>
     <#if uploadCount != 0>
-    <section class="mb-4">
-        <h2>Active Uploads</h2>
-        <ul>
+        <@section.defaultsection title="Uploads" description="Your recent uploads">
+        <div class="list-group">
         <#list uploads as upload>
-            <li>Upload ${upload.id} <a href="/upload/${upload.id}">Manage</a></li>
+            <a href="/upload/${upload.id}" class="list-group-item list-group-item-action">${upload.id}</a>
         </#list>
-        </ul>
-    </section>
+        </div>
+        </@section.defaultsection>
     </#if>
-    <section class="p-3 border bg-light rounded container">
-        <h2>New upload</h2>
-        <form class="g-5" action="/upload" method="post" enctype="multipart/form-data">
-            <div class="input-group mb-3">
-                <label for="formFileMultiple" class="form-label"></label>
-                <input class="form-control" type="file" id="formFileMultiple" name="images" multiple />
-            </div>
-            <div class="d-grid gap-4 inputBox text-center">
-                <button type="submit" class="btn btn-primary">Ladda upp bilder</button>
-
-                <a class="btn btn-primary" href="main.html" role="button">Gå tillbaka</a>
+    <section class="border bg-light rounded container py-4 my-5" style="max-width: 480px">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="vstack gap-3 mx-auto px-3">
+                <h3 class="mb-0">Ny uppladdning</h3>
+                <p class="mb-0">Välj bilder som skall laddas upp.</p>
+                <div class="input-group">
+                    <input type="file" class="form-control" id="inputGroupFile" name="images" aria-describedby="inputGroupFileAddon" aria-label="Upload" multiple>
+                </div>
+                <p class="mb-0">
+                    <small>Du kan redigera bildtext efter uppladdning.</small>
+                </p>
+                <div class="hstack gap-2">
+                    <button type="reset" class="btn w-100 btn-outline-primary">Rensa</button>
+                    <button type="submit" class="btn w-100 btn-primary">Ladda upp</button>
+                </div>
             </div>
         </form>
     </section>

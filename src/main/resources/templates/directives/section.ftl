@@ -1,6 +1,6 @@
 <#macro defaultsection title description>
     <section>
-        <header class="py-4">
+        <header class="mt-5 mb-4">
             <h3>${title!""}</h3>
             <p>${description!""}</p>
         </header>

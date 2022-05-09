@@ -27,6 +27,7 @@
                         <li><a href="/archive" class="nav-link px-2 link-dark">Archive</a></li>
                         <li><a href="/search" class="nav-link px-2 link-dark">Search</a></li>
                         <li><a href="/upload" class="nav-link px-2 link-dark">Upload</a></li>
+                        <li><a href="/config" class="nav-link px-2 link-dark">Config</a></li>
                     </ul>
 
                     <#if (state.isAuthenticated)!false == true>
