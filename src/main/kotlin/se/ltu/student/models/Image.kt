@@ -39,6 +39,11 @@ fun resolve(parent: Image?, images: SizedIterable<Image>): List<ImageModel> {
     return images.map(Image::toModel)
 }
 
+// Find value for tag
+fun tagSearch(tags: Map<String, Map<String, String>>) {
+
+}
+
 class Image(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : UUIDEntityClass<Image>(Images)
 
@@ -68,19 +73,19 @@ class Image(id: EntityID<UUID>) : UUIDEntity(id) {
 
     private fun setMetadata(file: File) {
         val metadata: com.drew.metadata.Metadata = ImageMetadataReader.readMetadata(file)
-        val tags = metadata.directories.associate { dir ->
-            dir.name to dir.tags.filter { tag ->
-                !tag.tagName.contains("Unknown")
-            }.associate { tag -> tag.tagName to tag.description }
+        val fields = metadata.directories.associate { dir ->
+            dir.name to dir.tags.filter { field ->
+                !field.tagName.contains("Unknown")
+            }.associate { field -> field.tagName to field.description }
         }
 
-        for (dir in tags) {
-            for (tag in dir.value) {
-                if (tag.key.contains("Image Width")) {
-                    this.width = tag.value.toInt()
+        for (dir in fields) {
+            for (field in dir.value) {
+                if (field.key.contains("Image Width")) {
+                    this.width = field.value.toInt()
                 }
-                if (tag.key.contains("Image Height")) {
-                    this.height = tag.value.toInt()
+                if (field.key.contains("Image Height")) {
+                    this.height = field.value.toInt()
                 }
                 if (this.width > 0 && this.height > 0)
                     break
@@ -89,7 +94,7 @@ class Image(id: EntityID<UUID>) : UUIDEntity(id) {
                 break
         }
 
-        this.metadata = ImageMetadata(tags)
+        this.metadata = ImageMetadata(fields)
     }
 
     override fun delete() {
