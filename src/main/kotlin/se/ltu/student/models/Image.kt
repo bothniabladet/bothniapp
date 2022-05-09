@@ -39,9 +39,13 @@ fun resolve(parent: Image?, images: SizedIterable<Image>): List<ImageModel> {
     return images.map(Image::toModel)
 }
 
-// Find value for tag
-fun tagSearch(tags: Map<String, Map<String, String>>) {
-
+// Find value for key in fields
+fun valueFor(key: String, fields: Map<String, Map<String, String>>): String? {
+    for (dir in fields)
+        for (field in dir.value)
+            if (field.key.contains(key))
+                return field.value
+    return null
 }
 
 class Image(id: EntityID<UUID>) : UUIDEntity(id) {
@@ -79,20 +83,8 @@ class Image(id: EntityID<UUID>) : UUIDEntity(id) {
             }.associate { field -> field.tagName to field.description }
         }
 
-        for (dir in fields) {
-            for (field in dir.value) {
-                if (field.key.contains("Image Width")) {
-                    this.width = field.value.toInt()
-                }
-                if (field.key.contains("Image Height")) {
-                    this.height = field.value.toInt()
-                }
-                if (this.width > 0 && this.height > 0)
-                    break
-            }
-            if (this.width > 0 && this.height > 0)
-                break
-        }
+        valueFor("Image Width", fields)?.let { width -> this.width = width.toInt() }
+        valueFor("Image Height", fields)?.let { height -> this.height = height.toInt() }
 
         this.metadata = ImageMetadata(fields)
     }
