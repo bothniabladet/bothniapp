@@ -2,7 +2,6 @@
 <#-- @ftlvariable name="uploads" type="kotlin.collections.List<se.ltu.student.models.UploadModel>" -->
 <#import "../_layout.ftl" as layout />
 <@layout.header>
-    <h1>Upload</h1>
     <#if uploadCount != 0>
     <section class="mb-4">
         <h2>Active Uploads</h2>
@@ -27,5 +26,4 @@
             </div>
         </form>
     </section>
-
 </@layout.header>

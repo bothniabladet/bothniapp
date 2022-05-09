@@ -10,7 +10,6 @@ import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.models.Category
-import se.ltu.student.models.Upload
 import java.util.*
 
 fun Application.configureModuleConfig() {
@@ -26,7 +25,7 @@ fun Application.configureModuleConfig() {
                         val categories = transaction {
                             Category.all().map(Category::toModel)
                         }
-                        call.respondFMT(FreeMarkerContent("config/categories.ftl", mapOf("categories" to categories)))
+                        call.respondFMT(FreeMarkerContent("config/category/index.ftl", mapOf("categories" to categories)))
                     }
 
                     post {
@@ -41,6 +40,34 @@ fun Application.configureModuleConfig() {
                         }
 
                         call.respondRedirect("/config/category")
+                    }
+
+                    route("/{id}") {
+                        get {
+                            val id = UUID.fromString(call.parameters.getOrFail("id"))
+
+                            val category = transaction {
+                                Category.findById(id)?.toModel() ?: throw Error("No such category.")
+                            }
+                            call.respondFMT(FreeMarkerContent("config/category/edit.ftl", mapOf("category" to category)))
+                        }
+
+                        post {
+                            val id = UUID.fromString(call.parameters.getOrFail("id"))
+
+                            val formParameters = call.receiveParameters()
+
+                            val name = formParameters.getOrFail("name")
+                            val description = formParameters.getOrFail("description")
+
+                            transaction {
+                                val category = Category.findById(id) ?: throw Error("No such category.")
+                                category.name = name
+                                category.description = description
+                            }
+
+                            call.respondRedirect("/config/category")
+                        }
                     }
                 }
             }

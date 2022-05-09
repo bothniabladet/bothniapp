@@ -25,7 +25,19 @@ fun Application.configureModuleArchive() {
                 get {
                     // Categories
                     // -- "events" (dates) OR image "groups"
-                    call.respondFMT(FreeMarkerContent("archive/index.ftl", null))
+                    val categories = transaction {
+                        Category.all().map(Category::toModel)
+                    }
+                    call.respondFMT(FreeMarkerContent("archive/index.ftl", mapOf("categories" to categories)))
+                }
+
+                get("/{id}") {
+                    val id = UUID.fromString(call.parameters.getOrFail("id"))
+
+                    val category = transaction {
+                        Category.findById(id)?.toModel() ?: throw Error("No such category.")
+                    }
+                    call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category)))
                 }
 
                 route("/image/{id}") {

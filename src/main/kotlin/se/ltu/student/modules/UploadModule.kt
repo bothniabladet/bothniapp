@@ -93,6 +93,14 @@ fun Application.configureModuleUpload() {
                     }
                     call.respondRedirect("/upload")
                 }
+
+                post("/{id}/complete") {
+                    val id = UUID.fromString(call.parameters["id"])
+                    transaction {
+                        Upload.findById(id)?.delete()
+                    }
+                    call.respondFMT(FreeMarkerContent("upload/manage.ftl", null))
+                }
             }
         }
     }
