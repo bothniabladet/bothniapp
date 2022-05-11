@@ -25,14 +25,19 @@ fun Application.configureModuleAuthentication() {
             if (call.sessions.get<UserSession>() != null) {
                 call.respondRedirect("/profile")
             } else {
-                call.respondFMT(FreeMarkerContent("authentication/login.ftl", null))
+                call.respondFMT(FreeMarkerContent("authentication/login.ftl", mapOf("redirect" to call.parameters["redirect"])))
             }
         }
 
         authenticate("auth-form") {
             post("/login") {
                 call.sessions.set(call.principal<UserSession>())
-                call.respondRedirect("/")
+
+                val redirect = call.parameters["redirect"]
+                if (redirect != null)
+                    call.respondRedirect(redirect)
+                else
+                    call.respondRedirect("/")
             }
         }
     }

@@ -3,6 +3,7 @@ package se.ltu.student.plugins
 import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.request.*
 
 import io.ktor.server.response.*
 import org.jetbrains.exposed.sql.select
@@ -47,7 +48,7 @@ fun Application.configureAuthentication() {
                 session
             }
             challenge {
-                call.respondRedirect("/login")
+                call.respondRedirect("/login?redirect=${this.call.request.path()}")
             }
         }
     }
