@@ -48,8 +48,8 @@ fun valueFor(key: String, fields: Map<String, Map<String, String>>): String? {
     return null
 }
 
-class Image(id: EntityID<UUID>) : UUIDEntity(id) {
-    companion object : UUIDEntityClass<Image>(Images)
+class Image(id: EntityID<UUID>) : BaseUUIDEntity(id, Images) {
+    companion object : BaseUUIDEntityClass<Image>(Images)
 
     var parent by Image optionalReferencedOn Images.parent
     var caption by Images.caption
@@ -101,7 +101,7 @@ class Image(id: EntityID<UUID>) : UUIDEntity(id) {
 @kotlinx.serialization.Serializable
 data class ImageMetadata(val values: Map<String, Map<String, String>>)
 
-object Images : UUIDTable() {
+object Images : BaseUUIDTable("images") {
     val parent = reference("parent", id).nullable()
     val caption = varchar("caption", 256)
     val description = text("description").nullable()

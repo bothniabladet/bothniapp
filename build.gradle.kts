@@ -39,6 +39,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-core", "0.38.1")
     implementation("org.jetbrains.exposed", "exposed-dao", "0.38.1")
     implementation("org.jetbrains.exposed", "exposed-jdbc", "0.38.1")
+    implementation("org.jetbrains.exposed", "exposed-java-time", "0.38.1")
     implementation("org.postgresql:postgresql:42.3.4")
     implementation("at.favre.lib:bcrypt:0.9.0")
     implementation("com.drewnoakes:metadata-extractor:2.18.0")
