@@ -17,6 +17,8 @@ import java.util.*
 
 
 fun Application.configureModuleUpload() {
+    val storagePath: String = environment.config.propertyOrNull("ktor.deployment.storagePath")?.getString() ?: "uploads/"
+
     routing {
         authenticate("auth-session") {
             route("/upload") {
@@ -56,7 +58,7 @@ fun Application.configureModuleUpload() {
                                 images.add(image)
 
                                 transaction {
-                                    image.writeImage(fileBytes, fileExtension)
+                                    image.writeImage(fileBytes, fileExtension, storagePath)
                                 }
                             }
                             else -> {}
@@ -86,6 +88,7 @@ fun Application.configureModuleUpload() {
                     transaction {
                         val upload = Upload.findById(id) ?: throw Error("No such upload.")
                         upload.images.forEach {
+                            it.deleteImage(storagePath)
                             it.delete()
                         }
                         upload.delete()

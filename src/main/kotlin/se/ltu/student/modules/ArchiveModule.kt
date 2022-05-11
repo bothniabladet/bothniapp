@@ -18,6 +18,8 @@ import java.io.File
 import java.util.*
 
 fun Application.configureModuleArchive() {
+    val storagePath: String = environment.config.propertyOrNull("ktor.deployment.storagePath")?.getString() ?: "uploads/"
+
     routing {
         authenticate("auth-session") {
             route("/archive") {
@@ -123,7 +125,7 @@ fun Application.configureModuleArchive() {
                                         }
 
                                         transaction {
-                                            image.writeImage(fileBytes, fileExtension)
+                                            image.writeImage(fileBytes, fileExtension, storagePath)
                                         }
                                     }
                                     else -> {}
@@ -189,6 +191,26 @@ fun Application.configureModuleArchive() {
                         }
 
                         call.respondRedirect("/archive/image/${id}")
+                    }
+
+                    // Delete
+
+                    route("/delete") {
+                        get {
+
+                        }
+
+                        post {
+                            val id = UUID.fromString(call.parameters.getOrFail("id"))
+
+                            transaction {
+                                val image = Image.findById(id) ?: throw Error("Image not found.")
+                                image.deleteImage(storagePath)
+                                image.delete()
+                            }
+
+                            call.respondRedirect("/")
+                        }
                     }
                 }
             }

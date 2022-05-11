@@ -63,12 +63,12 @@ class Image(id: EntityID<UUID>) : BaseUUIDEntity(id, Images) {
     var upload by Upload via ImageUploads
     val variants by Image optionalReferrersOn Images.parent
 
-    fun writeImage(bytes: ByteArray, extension: String) {
+    fun writeImage(bytes: ByteArray, extension: String, storagePath: String) {
         // Set the new filename
         this.path = "${this.id}.${extension}"
 
         // Persist file to disk
-        val file = File("uploads/$path")
+        val file = File("${storagePath}/$path")
         file.writeBytes(bytes)
 
         // Set metadata
@@ -89,9 +89,14 @@ class Image(id: EntityID<UUID>) : BaseUUIDEntity(id, Images) {
         this.metadata = ImageMetadata(fields)
     }
 
+    fun deleteImage(storagePath: String) {
+        this.variants.forEach { image -> image.deleteImage(storagePath) }
+        File("$storagePath/$path").delete()
+        super.delete()
+    }
+
     override fun delete() {
         this.variants.forEach(Image::delete)
-        File("uploads/$path").delete()
         super.delete()
     }
 
