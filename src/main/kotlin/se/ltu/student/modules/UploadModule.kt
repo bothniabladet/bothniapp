@@ -1,6 +1,5 @@
 package se.ltu.student.modules
 
-import com.drew.imaging.ImageMetadataReader
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -99,7 +98,7 @@ fun Application.configureModuleUpload() {
                     transaction {
                         Upload.findById(id)?.delete()
                     }
-                    call.respondFMT(FreeMarkerContent("upload/manage.ftl", null))
+                    call.respondRedirect("/upload")
                 }
             }
         }

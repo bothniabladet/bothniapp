@@ -1,6 +1,5 @@
 package se.ltu.student.modules
 
-import com.drew.imaging.ImageMetadataReader
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -10,11 +9,11 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
-import se.ltu.student.models.Category
-import se.ltu.student.models.Image
-import se.ltu.student.models.ImageMetadata
+import se.ltu.student.models.*
 import java.io.File
 import java.util.*
 
@@ -37,7 +36,12 @@ fun Application.configureModuleArchive() {
                     val category = transaction {
                         Category.findById(id)?.toModel() ?: throw Error("No such category.")
                     }
-                    call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category)))
+                    val images = transaction {
+                        Image.find {
+                            (Images.category eq id) and (Images.parent eq null)
+                        }.map(Image::toModel)
+                    }
+                    call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category, "images" to images)))
                 }
 
                 route("/image/{id}") {
@@ -172,6 +176,19 @@ fun Application.configureModuleArchive() {
 
                             call.respondRedirect("/archive/image/${id}")
                         }
+                    }
+
+                    // Decouple
+
+                    post("/decouple") {
+                        val id = UUID.fromString(call.parameters.getOrFail("id"))
+
+                        transaction {
+                            val image = Image.findById(id) ?: throw Error("Image not found.")
+                            image.parent = null
+                        }
+
+                        call.respondRedirect("/archive/image/${id}")
                     }
                 }
             }

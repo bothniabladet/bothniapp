@@ -83,13 +83,14 @@ class Image(id: EntityID<UUID>) : UUIDEntity(id) {
             }.associate { field -> field.tagName to field.description }
         }
 
-        valueFor("Image Width", fields)?.let { width -> this.width = width.toInt() }
-        valueFor("Image Height", fields)?.let { height -> this.height = height.toInt() }
+        valueFor("Image Width", fields)?.let { width -> this.width = width.replace("[^0-9]".toRegex(), "").toInt() }
+        valueFor("Image Height", fields)?.let { height -> this.height = height.replace("[^0-9]".toRegex(), "").toInt() }
 
         this.metadata = ImageMetadata(fields)
     }
 
     override fun delete() {
+        this.variants.forEach(Image::delete)
         File("uploads/$path").delete()
         super.delete()
     }
