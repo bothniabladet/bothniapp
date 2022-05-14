@@ -1,10 +1,9 @@
-<#macro defaultsection title description>
-    <section>
-        <header class="mt-5 mb-4">
-            <h3>${title!""}</h3>
-            <p>${description!""}</p>
+<#macro defaultsection title>
+    <section class="container px-4 py-5">
+        <header>
+            <h2 class="pb-2 border-bottom">${title!""}</h2>
         </header>
-        <div class="my-4">
+        <div class="mb-5">
             <#nested>
         </div>
     </section>

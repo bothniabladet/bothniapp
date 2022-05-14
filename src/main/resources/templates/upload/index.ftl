@@ -4,15 +4,20 @@
 <#import "../_layout.ftl" as layout />
 
 <@layout.header>
-    <#if uploadCount != 0>
-        <@section.defaultsection title="Uploads" description="Your recent uploads">
-        <div class="list-group">
-        <#list uploads as upload>
-            <a href="/upload/${upload.id}" class="list-group-item list-group-item-action">${upload.id}</a>
-        </#list>
-        </div>
-        </@section.defaultsection>
-    </#if>
+    <@section.defaultsection title="Uppladdningar">
+    <div class="list-group">
+    <#list uploads as upload>
+        <a href="/upload/${upload.id}" class="list-group-item list-group-item-action">
+            ${upload.images?size} <#if upload.images?size == 1>bild<#else>bilder</#if>, ${upload.created}
+            <ul>
+                <#list upload.images as image>
+                    <li>${image.caption!""}</li>
+                </#list>
+            </ul>
+        </a>
+    </#list>
+    </div>
+    </@section.defaultsection>
     <section class="border bg-light rounded container py-4 my-5" style="max-width: 480px">
         <form action="/upload" method="post" enctype="multipart/form-data">
             <div class="vstack gap-3 mx-auto px-3">

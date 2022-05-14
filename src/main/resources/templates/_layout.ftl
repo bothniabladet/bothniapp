@@ -9,6 +9,7 @@
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="/static/style/bothniabladet.css">
 
         <title>Bothniabladet</title>
     </head>
@@ -23,14 +24,14 @@
                         </svg>
                     </a>
 
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="/archive" class="nav-link px-2 link-dark">Archive</a></li>
-                        <li><a href="/search" class="nav-link px-2 link-dark">Search</a></li>
-                        <li><a href="/upload" class="nav-link px-2 link-dark">Upload</a></li>
-                        <li><a href="/config" class="nav-link px-2 link-dark">Config</a></li>
+                    <ul class="nav nav-pills col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="/archive" class="nav-link px-4">Arkiv</a></li>
+                        <li><a href="/search" class="nav-link px-4">Sök</a></li>
+                        <li><a href="/upload" class="nav-link px-4">Bilduppladdning</a></li>
                     </ul>
 
                     <#if (state.isAuthenticated)!false == true>
+                    <div class="text-end"><a href="/config" class="nav-link">Systemkonfiguration</a></div>
                     <div class="dropdown text-end">
                         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle fs-4"></i>
@@ -45,8 +46,8 @@
                     </div>
                     <#else>
                     <div class="text-end">
-                        <a class="btn btn-light border px-4" href="/login">Sign in</a>
-                        <a class="btn btn-primary px-4" href="/register">Register</a>
+                        <a class="btn btn-light border px-4" href="/login">Logga in</a>
+                        <a class="btn btn-primary px-4" href="/register">Skapa konto</a>
                     </div>
                     </#if>
                 </div>

@@ -27,9 +27,9 @@ fun Application.configureModuleUpload() {
                     val uploads = transaction {
                         Upload.find {
                             Uploads.user eq userProfile.id
-                        }.map { it }
+                        }.map(Upload::toModel)
                     }
-                    call.respondFMT(FreeMarkerContent("upload/index.ftl", mapOf("uploads" to uploads, "uploadCount" to uploads.count())))
+                    call.respondFMT(FreeMarkerContent("upload/index.ftl", mapOf("uploads" to uploads)))
                 }
 
                 post {

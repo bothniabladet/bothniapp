@@ -18,22 +18,23 @@
                 </div>
                 <div class="col-md-6 col-12">
                     <form action="/archive/image/${image.id}/edit" method="post">
-                        <div class="mb-3">
-                            <label for="captionFormControlInput" class="form-label">Bildtext</label>
-                            <input type="text" class="form-control" id="captionFormControlInput" name="caption" placeholder="Katt i Maxikasse..." value="${image.caption!""}">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-4" id="captionFormControlInput" name="caption" placeholder="Katt i Maxikasse..." value="${image.caption!""}">
+                            <label for="captionFormControlInput">Bildtext</label>
                         </div>
-                        <div class="mb-3">
-                            <label for="descriptionFormControlInput" class="form-label">Bildtext</label>
-                            <textarea class="form-control" id="descriptionFormControlInput" name="description" placeholder="Denna katt föredrar att sova i en maxikasse snarare än på ett katträd...">${image.description!""}</textarea>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control rounded-4" id="descriptionFormControlInput" name="description" style="height: 80px" placeholder="Denna katt föredrar att sova i en maxikasse snarare än på ett katträd...">${image.description!""}</textarea>
+                            <label for="descriptionFormControlInput">Beskrivning</label>
                         </div>
 
-                        <div class="mb-3">
-                            <select class="form-select" name="category">
+                        <div class="form-floating mb-3">
+                            <select class="form-select rounded-4" id="categoryFormControlInput" name="category">
                                 <option <#if !image.category??>selected</#if> value="none">None</option>
                                 <#list categories as category>
                                     <option value="${category.id}" <#if category.id == (image.category.id)!"">selected</#if>>${category.name}</option>
                                 </#list>
                             </select>
+                            <label for="categoryFormControlInput">Kategori</label>
                         </div>
 
                         <div class="mb-3">

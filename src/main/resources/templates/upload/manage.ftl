@@ -2,7 +2,7 @@
 <#import "../directives/section.ftl" as section />
 <#import "../_layout.ftl" as layout />
 <@layout.header>
-    <@section.defaultsection title="Upload" description="Manage uploaded images">
+    <@section.defaultsection title="Uppladdade bilder">
         <#list upload.images as image>
             <div class="card mb-3">
                 <img src="/archive/image/${image.id}/preview" class="img-fluid rounded-top" alt="...">

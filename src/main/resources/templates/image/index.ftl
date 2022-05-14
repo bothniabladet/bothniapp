@@ -2,7 +2,7 @@
 <#import "../directives/section.ftl" as section />
 <#import "../_layout.ftl" as layout />
 <@layout.header>
-    <@section.defaultsection title=image.caption!"" description=image.description!"">
+    <@section.defaultsection title=image.caption!"">
         <div class="row">
             <div class="col-md-6 col-12">
                 <figure class="figure">
