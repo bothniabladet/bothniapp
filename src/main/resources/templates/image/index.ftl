@@ -27,7 +27,11 @@
                     <dd><a href="/archive/image/${image.parent.id}">${image.parent.caption!""}</a></dd>
                     </#if>
                     <dt>Kategori</dt>
-                    <dd><#if image.category??><a href="/archive/${(image.category.id)!""}">${(image.category.name)!""}</a><#else><em>Kategori saknas</em></#if></dd>
+                    <dd><#if image.category??><a href="/archive/${(image.category.id)!""}">${(image.category.name)!""}</a><#else><em><a href="/archive/uncategorized">Okategoriserat</a></em></#if></dd>
+                    <dt>Fotograf</dt>
+                    <dd><#if image.photographer??><a href="/archive/photographer/${(image.photographer.id)!""}">${(image.photographer.givenName)!""} ${(image.photographer.familyName)!""}</a><#else><em>Ej angiven</em></#if></dd>
+                    <dt>Bildkälla</dt>
+                    <dd><#if image.photographer??><a href="/archive/source/${(image.imageSource.id)!""}">${(image.imageSource.name)!""}</a><#else>Intern</#if></dd>
                     <dt>Filstorlek</dt>
                     <dd><#if image.size??>${(image.size)!""}<#else><em>Filstorlek saknas</em></#if></dd>
                     <dt>Bildstorlek</dt>

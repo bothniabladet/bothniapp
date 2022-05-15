@@ -15,11 +15,14 @@ object DatabaseFactory {
         val password = environment.config.propertyOrNull("ktor.database.password")?.getString() ?: "postgres"
         val database = Database.connect(url = jdbcURL, driver = driverClassName, user = user, password = password)
         transaction(database) {
-            SchemaUtils.create(Users)
 
+            //SchemaUtils.drop(Photographers, ImageSources, ImageUploads, Uploads, Images, Categories, Users, inBatch = true)
+
+            SchemaUtils.create(Users)
+            SchemaUtils.create(ImageSources)
+            SchemaUtils.create(Photographers)
             SchemaUtils.create(Categories)
             SchemaUtils.create(Images)
-
             SchemaUtils.create(Uploads)
             SchemaUtils.create(ImageUploads)
         }

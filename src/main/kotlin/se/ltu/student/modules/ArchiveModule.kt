@@ -11,6 +11,8 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.models.*
@@ -32,15 +34,26 @@ fun Application.configureModuleArchive() {
                     call.respondFMT(FreeMarkerContent("archive/index.ftl", mapOf("categories" to categories)))
                 }
 
-                get("/{id}") {
-                    val id = UUID.fromString(call.parameters.getOrFail("id"))
+                get("/{slug}") {
+                    val slug = call.parameters.getOrFail("slug")
+
+                    if (slug == "uncategorized") {
+                        val category = CategoryModel("uncategorized", null, "Okategoriserat", "uncategorized", "Bilder som inte tillhör en kategori")
+                        val images = transaction {
+                            Image.find {
+                                (Images.category eq null) and (Images.id notInSubQuery ImageUploads.slice(ImageUploads.image).selectAll())
+                            }.map(Image::toModel)
+                        }
+                        call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category, "images" to images)))
+                        return@get
+                    }
 
                     val category = transaction {
-                        Category.findById(id)?.toModel() ?: throw Error("No such category.")
+                        Category.find(Categories.slug eq slug).firstOrNull() ?: Category.findById(UUID.fromString(slug)) ?: throw Error("No such category.")
                     }
                     val images = transaction {
                         Image.find {
-                            (Images.category eq id) and (Images.parent eq null)
+                            (Images.category eq category.id) and (Images.parent eq null) and (Images.id notInSubQuery ImageUploads.slice(ImageUploads.image).selectAll())
                         }.map(Image::toModel)
                     }
                     call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category, "images" to images)))
@@ -145,14 +158,21 @@ fun Application.configureModuleArchive() {
                             val image = transaction {
                                 Image.findById(id)?.toModel()
                             } ?: throw Error("Image not found.")
+
                             val categories = transaction {
                                 Category.all().map(Category::toModel)
+                            }
+                            val photographers = transaction {
+                                Photographer.all().map(Photographer::toModel)
+                            }
+                            val imageSources = transaction {
+                                ImageSource.all().map(ImageSource::toModel)
                             }
 
                             call.respondFMT(
                                 FreeMarkerContent(
                                     "image/edit.ftl",
-                                    mapOf("image" to image, "categories" to categories)
+                                    mapOf("image" to image, "categories" to categories, "photographers" to photographers, "imageSources" to imageSources)
                                 )
                             )
                         }
@@ -164,16 +184,18 @@ fun Application.configureModuleArchive() {
 
                             val caption = formParameters.getOrFail("caption")
                             val description = formParameters.getOrFail("description")
-                            val category = formParameters["category"]
+                            val category = formParameters.getOrFail("category")
+                            val photographer = formParameters.getOrFail("photographer")
+                            val imageSource = formParameters.getOrFail("imageSource")
 
                             transaction {
                                 val image = Image.findById(id) ?: throw Error("Image not found.")
                                 image.caption = caption
                                 image.description = description
 
-                                if (category != null) {
-                                    image.category = Category.findById(UUID.fromString(category))
-                                }
+                                image.category = if (category != "none") Category.findById(UUID.fromString(category)) else null
+                                image.photographer = if (photographer != "none") Photographer.findById(UUID.fromString(photographer)) else null
+                                image.imageSource = if (imageSource != "none") ImageSource.findById(UUID.fromString(imageSource)) else null
                             }
 
                             call.respondRedirect("/archive/image/${id}")
@@ -195,18 +217,16 @@ fun Application.configureModuleArchive() {
 
                     // Delete
 
-                    route("/delete") {
-                        post {
-                            val id = UUID.fromString(call.parameters.getOrFail("id"))
+                    post("/delete") {
+                        val id = UUID.fromString(call.parameters.getOrFail("id"))
 
-                            transaction {
-                                val image = Image.findById(id) ?: throw Error("Image not found.")
-                                image.deleteImage(storagePath)
-                                image.delete()
-                            }
-
-                            call.respondRedirect("/")
+                        transaction {
+                            val image = Image.findById(id) ?: throw Error("Image not found.")
+                            image.deleteImage(storagePath)
+                            image.delete()
                         }
+
+                        call.respondRedirect("/")
                     }
                 }
             }
