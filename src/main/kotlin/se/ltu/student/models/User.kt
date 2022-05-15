@@ -5,6 +5,7 @@ import java.util.*
 
 @kotlinx.serialization.Serializable
 data class UserModel constructor(
+    val id: String,
     val givenName: String,
     val familyName: String,
     val email: String,
@@ -20,7 +21,7 @@ class User(id: EntityID<UUID>) : BaseUUIDEntity(id, Users) {
     var email by Users.email
     var passwordHash by Users.passwordHash
 
-    fun toModel() = UserModel(givenName, familyName, email, createdAt.toString(), updatedAt.toString())
+    fun toModel() = UserModel(id.toString(), givenName, familyName, email, createdAt.toString(), updatedAt.toString())
 }
 
 object Users : BaseUUIDTable("users") {

@@ -23,10 +23,10 @@ fun Application.configureModuleUpload() {
         authenticate("auth-session") {
             route("/upload") {
                 get {
-                    val userProfile = call.principal<UserSession>()?.userProfile ?: throw Error("Unauthorized")
+                    val userModel = call.principal<UserSession>()?.model ?: throw Error("Unauthorized")
                     val uploads = transaction {
                         Upload.find {
-                            Uploads.user eq userProfile.id
+                            Uploads.user eq UUID.fromString(userModel.id)
                         }.map(Upload::toModel)
                     }
                     call.respondFMT(FreeMarkerContent("upload/index.ftl", mapOf("uploads" to uploads)))
@@ -34,8 +34,8 @@ fun Application.configureModuleUpload() {
 
                 post {
                     // Get user
-                    val userProfile = call.principal<UserSession>()?.userProfile ?: throw Error("Unauthorized")
-                    val user = transaction { User.findById(userProfile.id) }
+                    val userModel = call.principal<UserSession>()?.model ?: throw Error("Unauthorized")
+                    val user = transaction { User.findById(UUID.fromString(userModel.id)) }
                     val images = arrayListOf<Image>()
 
                     val multipartData = call.receiveMultipart()
