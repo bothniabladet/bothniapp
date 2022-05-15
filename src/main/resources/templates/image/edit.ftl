@@ -38,28 +38,47 @@
                         </div>
 
                         <div class="mb-3">
-                            <button class="btn btn-primary px-4" type="submit">Spara</button>
+                            <button class="btn btn-primary btn-lg rounded-4 w-100" type="submit">Spara</button>
                         </div>
                     </form>
+                    <hr />
+                    <div>
+                        <button class="btn btn-outline-danger" id="deleteButton">Radera bild <i class="bi-trash3 ms-1"></i></button>
+                        <form id="deletionChallenge" action="/archive/image/${image.id}/delete" method="post" hidden>
+                            <#if image.variants?size == 0>
+                            <#else>
+                                <p class="fw-bold">Bilden har ${image.variants?size} <#if image.variants?size == 1>variant<#else>varianter</#if> som också kommer att raderas. För att undvika att en variant raderas, öppna denna och klicka på &quot;frikoppla&quot;.</p>
+                            </#if>
+
+                            <p>För att kunna radera bilden måste du skriva &quot;<strong>radera bild</strong>&quot; i rutan nedan.</p>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control rounded-4" id="deleteChallengeConfirmation" placeholder="Radera bild">
+                                <label for="deleteChallengeConfirmation">Bekräftelse</label>
+                            </div>
+                            <button class="btn btn-danger btn-lg w-100 rounded-4" id="confirmDeleteButton" type="submit" disabled>Ja, jag vill radera bilden <strong>permanent</strong>.</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 <script>
-    const caption = document.querySelector('#caption');
-    const description = document.querySelector('#description');
+    const confirmationText = "radera bild";
+    const deleteButton = document.querySelector('#deleteButton');
+    const deletionChallenge = document.querySelector('#deletionChallenge');
+    const deleteChallengeConfirmation = document.querySelector('#deleteChallengeConfirmation');
+    const confirmDeleteButton = document.querySelector('#confirmDeleteButton');
 
-    const form = {
-        caption: document.querySelector('#captionFormControlInput'),
-        description: document.querySelector('#descriptionFormControlInput'),
-    };
+    deleteButton.addEventListener('click', () => {
+        deleteButton.setAttribute("hidden", "true");
+        deletionChallenge.removeAttribute("hidden");
 
-    form.caption.addEventListener('keyup', (event) => {
-       caption.textContent = event.target.value;
-    });
-
-    form.description.addEventListener('keyup', (event) => {
-        description.textContent = event.target.value;
+        deleteChallengeConfirmation.addEventListener('keyup', (event) => {
+            if (event.target.value.toLowerCase() === confirmationText)
+                confirmDeleteButton.removeAttribute("disabled");
+            else
+                confirmDeleteButton.setAttribute("disabled", "true");
+        });
     });
 </script>
 </@layout.header>

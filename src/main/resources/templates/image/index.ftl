@@ -11,8 +11,8 @@
                 </figure>
             </div>
             <div class="col-md-6 col-12">
-                <a href="/archive/image/${image.id}/edit">Redigera <i class="bi-pencil ms-auto"></i></a>
-                <a href="/archive/image/${image.id}/delete" class="text-danger">Ta bort <i class="bi-trash ms-auto"></i></a>
+                <a href="/archive/image/${image.id}/edit"><i class="bi-pencil ms-auto" title="Redigera bild"></i></a>
+                <a href="/archive/image/${image.id}/download"><i class="bi-download ms-auto" title="Ladda ned bild"></i></a>
                 <#if image.parent??>
                     <form action="/archive/image/${image.id}/decouple" method="post">
                         <button>Frikoppla</button>

@@ -196,10 +196,6 @@ fun Application.configureModuleArchive() {
                     // Delete
 
                     route("/delete") {
-                        get {
-
-                        }
-
                         post {
                             val id = UUID.fromString(call.parameters.getOrFail("id"))
 
