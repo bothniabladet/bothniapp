@@ -21,7 +21,7 @@
                 <i class="bi-images text-muted flex-shrink-0 me-3" style="font-size: 1.75em"></i>
                 <div>
                     <h4 class="fw-bold mb-0">Okategoriserat</h4>
-                    <p>Bilder som ej tillhör en annan kategori</p>
+                    <p></p>
                     <a href="/archive/uncategorized" class="icon-link">
                         Call to action
                         <i class="bi bi-chevron-right"></i>

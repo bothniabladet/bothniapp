@@ -26,7 +26,8 @@ data class ImageModel constructor(
     val photographer: PhotographerModel?,
     val imageSource: ImageSourceModel?,
     val metadata: ImageMetadata?,
-    val variants: List<ImageModel>
+    val variants: List<ImageModel>,
+    val published: Boolean
 )
 
 // Workaround for recursive initializer violation
@@ -110,7 +111,7 @@ class Image(id: EntityID<UUID>) : BaseUUIDEntity(id, Images) {
         super.delete()
     }
 
-    fun toModel(loadChildren: Boolean = true) = ImageModel(id.toString(), resolve(parent), caption, description, path, size, width, height, category?.toModel(), photographer?.toModel(false), imageSource?.toModel(), metadata, if (loadChildren) resolve(parent, variants) else listOf())
+    fun toModel(loadChildren: Boolean = true) = ImageModel(id.toString(), resolve(parent), caption, description, path, size, width, height, category?.toModel(), photographer?.toModel(false), imageSource?.toModel(), metadata, if (loadChildren) resolve(parent, variants) else listOf(), upload.empty())
 }
 
 @kotlinx.serialization.Serializable

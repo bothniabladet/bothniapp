@@ -6,6 +6,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.SizedIterable
+import se.ltu.student.models.User.Companion.referrersOn
 import java.util.*
 
 @kotlinx.serialization.Serializable
@@ -27,8 +28,9 @@ class Photographer(id: EntityID<UUID>) : UUIDEntity(id) {
     var email by Photographers.email
     var phone by Photographers.phone
     var imageSource by ImageSource optionalReferencedOn Photographers.imageSource
+    val images by Image optionalReferrersOn Images.photographer
 
-    fun toModel(loadChildren: Boolean = false) = PhotographerModel(id.toString(), givenName, familyName, email, phone, imageSource?.toModel(), if (loadChildren) listOf() else listOf())
+    fun toModel(loadChildren: Boolean = false) = PhotographerModel(id.toString(), givenName, familyName, email, phone, imageSource?.toModel(), if (loadChildren) resolve(images).filter { image -> image.published } else listOf())
 }
 
 object Photographers : UUIDTable() {

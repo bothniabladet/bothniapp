@@ -60,6 +60,18 @@ fun Application.configureModuleArchive() {
                     call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category, "images" to images)))
                 }
 
+                route("/photographer/{id}") {
+                    get {
+                        val id = UUID.fromString(call.parameters.getOrFail("id"))
+
+                        val photographer = transaction {
+                            Photographer.findById(id)?.toModel(true)
+                        } ?: throw Error("Photographer not found.")
+
+                        call.respondFMT(FreeMarkerContent("archive/photographer.ftl", mapOf("photographer" to photographer)))
+                    }
+                }
+
                 route("/image/{id}") {
                     get {
                         val id = UUID.fromString(call.parameters.getOrFail("id"))
@@ -178,7 +190,7 @@ fun Application.configureModuleArchive() {
                             call.respondFMT(
                                 FreeMarkerContent(
                                     "image/edit.ftl",
-                                    mapOf("image" to image, "categories" to categories, "photographers" to photographers, "imageSources" to imageSources)
+                                    mapOf("image" to image, "categories" to categories, "photographers" to photographers, "imageSources" to imageSources, "redirect" to call.parameters["redirect"])
                                 )
                             )
                         }
@@ -209,7 +221,11 @@ fun Application.configureModuleArchive() {
 
                             call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
-                            call.respondRedirect("/archive/image/${id}")
+                            val redirect = call.parameters["redirect"]
+                            if (redirect != null)
+                                call.respondRedirect(redirect)
+                            else
+                                call.respondRedirect("/archive/image/${id}")
                         }
                     }
 
@@ -240,6 +256,12 @@ fun Application.configureModuleArchive() {
                         }
 
                         call.setVolatileNotification(UserNotification.success("Bild borttagen."))
+
+                        val redirect = call.parameters["redirect"]
+                        if (redirect != null)
+                            call.respondRedirect(redirect)
+                        else
+                            call.respondRedirect("/archive/image/${id}")
 
                         call.respondRedirect("/")
                     }

@@ -85,7 +85,43 @@ fun Application.configureModuleUpload() {
                     val upload = transaction {
                         Upload.findById(id)?.toModel()
                     }
-                    call.respondFMT(FreeMarkerContent("upload/manage.ftl", mapOf("upload" to upload)))
+
+                    val categories = transaction {
+                        Category.all().map(Category::toModel)
+                    }
+                    val photographers = transaction {
+                        Photographer.all().map(Photographer::toModel)
+                    }
+                    val imageSources = transaction {
+                        ImageSource.all().map(ImageSource::toModel)
+                    }
+
+                    call.respondFMT(FreeMarkerContent("upload/manage.ftl", mapOf("upload" to upload, "categories" to categories, "photographers" to photographers, "imageSources" to imageSources)))
+                }
+
+                post("/{id}/apply") {
+                    val id = UUID.fromString(call.parameters["id"])
+
+                    val formParameters = call.receiveParameters()
+
+                    val category = formParameters["category"]
+                    val photographer = formParameters["photographer"]
+                    val imageSource = formParameters["imageSource"]
+
+                    transaction {
+                        Upload.findById(id)?.images?.forEach { image ->
+                            if (category != null)
+                                image.category = if (category != "none") Category.findById(UUID.fromString(category)) else null
+                            if (photographer != null)
+                                image.photographer = if (photographer != "none") Photographer.findById(UUID.fromString(photographer)) else null
+                            if (imageSource != null)
+                                image.imageSource = if (imageSource != "none") ImageSource.findById(UUID.fromString(imageSource)) else null
+                        }
+                    }
+
+                    call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
+
+                    call.respondRedirect("/upload/$id")
                 }
 
                 post("/{id}/delete") {
@@ -104,7 +140,7 @@ fun Application.configureModuleUpload() {
                     call.respondRedirect("/upload")
                 }
 
-                post("/{id}/complete") {
+                post("/{id}/publish") {
                     val id = UUID.fromString(call.parameters["id"])
                     transaction {
                         Upload.findById(id)?.delete()

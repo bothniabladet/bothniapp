@@ -11,11 +11,11 @@
                 </figure>
             </div>
             <div class="col-md-6 col-12">
-                <a href="/archive/image/${image.id}/edit"><i class="bi-pencil ms-auto" title="Redigera bild"></i></a>
-                <a href="/archive/image/${image.id}/download"><i class="bi-download ms-auto" title="Ladda ned bild"></i></a>
+                <a class="btn btn-outline-primary border-0" href="/archive/image/${image.id}/edit"><i class="bi-pencil ms-auto" title="Redigera bild"></i></a>
+                <a class="btn btn-outline-primary border-0" href="/archive/image/${image.id}/download"><i class="bi-download ms-auto" title="Ladda ned bild"></i></a>
                 <#if image.parent??>
-                    <form action="/archive/image/${image.id}/decouple" method="post">
-                        <button>Frikoppla</button>
+                    <form class="d-inline" action="/archive/image/${image.id}/decouple" method="post">
+                        <button class="btn btn-outline-primary border-0"><i class="bi-diagram-2 ms-auto" title="Frikoppla"></i></button>
                     </form>
                 </#if>
 
@@ -36,6 +36,8 @@
                     <dd><#if image.size??>${(image.size)!""}<#else><em>Filstorlek saknas</em></#if></dd>
                     <dt>Bildstorlek</dt>
                     <dd><#if image.width??>${(image.width)!""} x ${(image.height)!""}<#else><em>Bildstorlek saknas</em></#if></dd>
+                    <dt>Publicerad</dt>
+                    <dd><#if image.published>Ja<#else>Nej</#if></dd>
                 </dl>
 
                 <hr />
