@@ -17,8 +17,6 @@ fun verifyPassword(password: String, passwordHash: CharArray): Boolean {
     return BCrypt.verifyer().verify(password.toCharArray(), passwordHash).verified
 }
 
-data class UserSession(val name: String, val model: UserModel) : Principal
-
 fun Application.configureAuthentication() {
     install(Authentication) {
         form("auth-form") {
