@@ -27,7 +27,6 @@ class Photographer(id: EntityID<UUID>) : UUIDEntity(id) {
     var email by Photographers.email
     var phone by Photographers.phone
     var imageSource by ImageSource optionalReferencedOn Photographers.imageSource
-    val images by Image referrersOn Photographers.id
 
     fun toModel(loadChildren: Boolean = false) = PhotographerModel(id.toString(), givenName, familyName, email, phone, imageSource?.toModel(), if (loadChildren) resolve(images) else listOf())
 }
