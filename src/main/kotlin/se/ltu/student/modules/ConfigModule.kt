@@ -59,11 +59,13 @@ fun Application.configureModuleConfig() {
 
                             val name = formParameters.getOrFail("name")
                             val description = formParameters.getOrFail("description")
+                            val slug = formParameters.getOrFail("slug")
 
                             transaction {
                                 val category = Category.findById(id) ?: throw Error("No such category.")
                                 category.name = name
                                 category.description = description
+                                category.slug = slug
                             }
 
                             call.respondRedirect("/config/category")
