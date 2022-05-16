@@ -6,6 +6,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.SizedIterable
 import se.ltu.student.models.Photographer.Companion.backReferencedOn
+import se.ltu.student.models.Photographer.Companion.optionalReferrersOn
 import java.util.*
 
 @kotlinx.serialization.Serializable
@@ -21,7 +22,7 @@ class ImageSource(id: EntityID<UUID>) : UUIDEntity(id) {
 
     var name by ImageSources.name
     var website by ImageSources.website
-    val images by Image referrersOn ImageSources.id
+    val images by Image optionalReferrersOn Images.imageSource
 
     fun toModel(loadChildren: Boolean = false) = ImageSourceModel(id.toString(), name, website, if (loadChildren) resolve(images) else listOf())
 }
