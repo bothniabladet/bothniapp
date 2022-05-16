@@ -10,7 +10,9 @@ import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
+import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.*
+import se.ltu.student.plugins.UserNotification
 import se.ltu.student.plugins.UserSession
 import java.io.File
 import java.util.*
@@ -42,9 +44,12 @@ fun Application.configureModuleUpload() {
                     multipartData.forEachPart { part ->
                         when (part) {
                             is PartData.FileItem -> {
-                                var fileName = part.originalFileName as String
+                                val fileName = part.originalFileName as String
                                 val fileExtension = File(fileName).extension
                                 val fileBytes = part.streamProvider().readBytes()
+
+                                if (fileBytes.isEmpty())
+                                    return@forEachPart
 
                                 // Create entry for image
                                 val image = transaction {
@@ -93,6 +98,9 @@ fun Application.configureModuleUpload() {
                         }
                         upload.delete()
                     }
+
+                    call.setVolatileNotification(UserNotification.success("Uppladdning borttagen."))
+
                     call.respondRedirect("/upload")
                 }
 
@@ -101,6 +109,9 @@ fun Application.configureModuleUpload() {
                     transaction {
                         Upload.findById(id)?.delete()
                     }
+
+                    call.setVolatileNotification(UserNotification.success("Uppladdade bilder publicerade."))
+
                     call.respondRedirect("/upload")
                 }
             }

@@ -8,6 +8,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.User
 import se.ltu.student.models.UserModel
 import se.ltu.student.models.Users
@@ -22,22 +23,27 @@ fun Application.configureAuthentication() {
         form("auth-form") {
             userParamName = "username"
             passwordParamName = "password"
-            validate { credentials ->
-                val user: User = transaction {
-                    val id = Users.select { Users.email eq credentials.name }.map { it[Users.id] }.firstOrNull()
-                    if (id != null) {
-                        User.findById(id)
-                    } else {
-                        null
-                    }
-                } ?: throw Error("Incorrect username or password.")
 
-                if (verifyPassword(credentials.password, user.passwordHash.toCharArray())) {
-                    val model = transaction { user.toModel() }
-                    UserSession(credentials.name, model)
-                } else {
-                    null
+            // Set redirect for if auth fails
+            this.challenge("/login")
+
+            validate { credentials ->
+                val user = transaction {
+                    User.find { Users.email eq credentials.name }.firstOrNull()
                 }
+
+                if (user == null) {
+                    setVolatileNotification(UserNotification.error("Ogiltigt användarnamn eller lösenord."))
+                    return@validate null
+                }
+
+                if (!verifyPassword(credentials.password, user.passwordHash.toCharArray())) {
+                    setVolatileNotification(UserNotification.error("Ogiltigt användarnamn eller lösenord."))
+                    return@validate null
+                }
+
+                val model = transaction { user.toModel() }
+                UserSession(credentials.name, model)
             }
         }
 

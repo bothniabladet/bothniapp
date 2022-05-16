@@ -54,6 +54,36 @@
             </div>
         </header>
         <main class="container">
+            <#if (state.volatileNotification)??>
+                <noscript>
+                    <div class="alert alert-${state.volatileNotification.type} fade show" role="alert">
+                        <#if (state.volatileNotification.title)??>
+                            <strong>${state.volatileNotification.title}</strong>
+                        </#if>
+                    </div>
+                </noscript>
+                <div class="toast-container position-absolute p-3 top-0 start-50 translate-middle-x" style="z-index: 11">
+                    <div class="toast bg-${state.volatileNotification.type} bg-opacity-50" role="alert" aria-live="assertive" aria-atomic="true">
+                        <#if (state.volatileNotification.title)??>
+                        <div class="toast-header">
+                            <strong class="me-auto">${state.volatileNotification.title}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <#else>
+                        <div class="d-flex">
+                        </#if>
+                        <div class="toast-body">
+                             ${state.volatileNotification.description}
+                        </div>
+                        <#if (state.volatileNotification.title)??>
+                        <#else>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        </#if>
+                        </div>
+                    </div>
+                </div>
+            </#if>
             <#nested>
         </main>
         <div class="container">
@@ -78,6 +108,16 @@
 
         <!-- Option 1: Bootstrap Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+        <script>
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            var toastList = toastElList.map(function (toastEl) {
+                return new bootstrap.Toast(toastEl)
+            })
+            toastList.forEach(toast => {
+                toast.show();
+            })
+        </script>
     </body>
     </html>
 </#macro>

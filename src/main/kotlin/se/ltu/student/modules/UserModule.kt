@@ -9,7 +9,9 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
+import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.User
+import se.ltu.student.plugins.UserNotification
 import se.ltu.student.plugins.UserSession
 import java.util.*
 
@@ -40,6 +42,8 @@ fun Application.configureModuleUser() {
                             user.givenName = givenName
                             user.familyName = familyName
                         }
+
+                        call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
                         call.respondRedirect("/profile")
                     }

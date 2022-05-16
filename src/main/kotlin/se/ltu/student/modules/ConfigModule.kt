@@ -9,7 +9,9 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
+import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.Category
+import se.ltu.student.plugins.UserNotification
 import java.util.*
 
 fun Application.configureModuleConfig() {
@@ -39,6 +41,8 @@ fun Application.configureModuleConfig() {
                             }
                         }
 
+                        call.setVolatileNotification(UserNotification.success("Kategori tillagd."))
+
                         call.respondRedirect("/config/category")
                     }
 
@@ -67,6 +71,8 @@ fun Application.configureModuleConfig() {
                                 category.description = description
                                 category.slug = slug
                             }
+
+                            call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
                             call.respondRedirect("/config/category")
                         }

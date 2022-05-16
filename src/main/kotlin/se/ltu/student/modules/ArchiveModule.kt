@@ -11,11 +11,12 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
+import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.*
+import se.ltu.student.plugins.UserNotification
 import java.io.File
 import java.util.*
 
@@ -124,6 +125,9 @@ fun Application.configureModuleArchive() {
                                         val fileExtension = File(fileName).extension
                                         val fileBytes = part.streamProvider().readBytes()
 
+                                        if (fileBytes.isEmpty())
+                                            return@forEachPart
+
                                         // Create entry for image
                                         val image = transaction {
                                             Image.new {
@@ -144,6 +148,8 @@ fun Application.configureModuleArchive() {
                                     else -> {}
                                 }
                             }
+
+                            call.setVolatileNotification(UserNotification.success("Variant tillagd."))
 
                             call.respondRedirect("/archive/image/${parent}")
                         }
@@ -193,10 +199,15 @@ fun Application.configureModuleArchive() {
                                 image.caption = caption
                                 image.description = description
 
-                                image.category = if (category != "none") Category.findById(UUID.fromString(category)) else null
-                                image.photographer = if (photographer != "none") Photographer.findById(UUID.fromString(photographer)) else null
-                                image.imageSource = if (imageSource != "none") ImageSource.findById(UUID.fromString(imageSource)) else null
+                                image.category =
+                                    if (category != "none") Category.findById(UUID.fromString(category)) else null
+                                image.photographer =
+                                    if (photographer != "none") Photographer.findById(UUID.fromString(photographer)) else null
+                                image.imageSource =
+                                    if (imageSource != "none") ImageSource.findById(UUID.fromString(imageSource)) else null
                             }
+
+                            call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
                             call.respondRedirect("/archive/image/${id}")
                         }
@@ -212,6 +223,8 @@ fun Application.configureModuleArchive() {
                             image.parent = null
                         }
 
+                        call.setVolatileNotification(UserNotification.success("Bild frikopplad."))
+
                         call.respondRedirect("/archive/image/${id}")
                     }
 
@@ -225,6 +238,8 @@ fun Application.configureModuleArchive() {
                             image.deleteImage(storagePath)
                             image.delete()
                         }
+
+                        call.setVolatileNotification(UserNotification.success("Bild borttagen."))
 
                         call.respondRedirect("/")
                     }
