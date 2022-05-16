@@ -30,7 +30,7 @@ class Photographer(id: EntityID<UUID>) : UUIDEntity(id) {
     var imageSource by ImageSource optionalReferencedOn Photographers.imageSource
     val images by Image optionalReferrersOn Images.photographer
 
-    fun toModel(loadChildren: Boolean = false) = PhotographerModel(id.toString(), givenName, familyName, email, phone, imageSource?.toModel(), if (loadChildren) resolve(images).filter { image -> image.published } else listOf())
+    fun toModel(loadChildren: Boolean = false) = PhotographerModel(id.toString(), givenName, familyName, email, phone, imageSource?.toModel(), if (loadChildren) resolve(images).filter { image -> image.published && image.parent == null } else listOf())
 }
 
 object Photographers : UUIDTable() {
