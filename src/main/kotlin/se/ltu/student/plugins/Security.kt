@@ -11,7 +11,7 @@ fun Application.configureSecurity() {
     install(Sessions) {
         cookie<UserSession>("user_session", SessionStorageMemory()) {
             cookie.path = "/"
-            cookie.maxAgeInSeconds = 5 * 60
+            cookie.maxAgeInSeconds = 60 * 60 * 48
             transform(SessionTransportTransformerEncrypt(secretEncryptKey, secretSignKey))
         }
     }
