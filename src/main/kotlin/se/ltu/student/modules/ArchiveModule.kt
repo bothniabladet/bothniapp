@@ -72,6 +72,18 @@ fun Application.configureModuleArchive() {
                     }
                 }
 
+                route("/source/{id}") {
+                    get {
+                        val id = UUID.fromString(call.parameters.getOrFail("id"))
+
+                        val imageSource = transaction {
+                            ImageSource.findById(id)?.toModel(true)
+                        } ?: throw Error("Image source not found.")
+
+                        call.respondFMT(FreeMarkerContent("archive/source.ftl", mapOf("source" to imageSource)))
+                    }
+                }
+
                 route("/image/{id}") {
                     get {
                         val id = UUID.fromString(call.parameters.getOrFail("id"))

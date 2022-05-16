@@ -31,7 +31,7 @@
                     <dt>Fotograf</dt>
                     <dd><#if image.photographer??><a href="/archive/photographer/${(image.photographer.id)!""}">${(image.photographer.givenName)!""} ${(image.photographer.familyName)!""}</a><#else><em>Ej angiven</em></#if></dd>
                     <dt>Bildkälla</dt>
-                    <dd><#if image.photographer??><a href="/archive/source/${(image.imageSource.id)!""}">${(image.imageSource.name)!""}</a><#else>Intern</#if></dd>
+                    <dd><#if image.imageSource??><a href="/archive/source/${(image.imageSource.id)!""}">${(image.imageSource.name)!""}</a><#else>Intern</#if></dd>
                     <dt>Filstorlek</dt>
                     <dd><#if image.size??>${(image.size)!""}<#else><em>Filstorlek saknas</em></#if></dd>
                     <dt>Bildstorlek</dt>
