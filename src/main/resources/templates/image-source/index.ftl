@@ -4,9 +4,8 @@
 
 <@layout.header>
     <@section.defaultsection title=imageSource.name>
-        <div class="d-flex justify-content-center align-items-center">
+        <div class="d-flex justify-content-start align-items-center">
             <#if imageSource.website??><span><strong>Hemsida</strong>: <a href="${imageSource.website}">${imageSource.website}</a></span></#if>
-            <a class="btn btn-sm btn-light border px-3 ms-auto" href="/source/${imageSource.id}/edit">Redigera</a>
         </div>
         <#if imageSource.photographers?size == 0>
         <#else>
@@ -15,10 +14,10 @@
         <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
             <#list imageSource.photographers as photographer>
                 <div class="col">
-                    <div class="card card-cover h-100 overflow-hidden rounded-5 shadow-lg" style="background-image: url('/image/${image.id}/preview');">
-                        <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-                            <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">${photographer.givenName} ${photographer.familyName}</h4>
-                            <ul class="d-flex list-unstyled mt-auto">
+                    <div class="card card-cover h-100 overflow-hidden rounded-5 bg-light shadow-lg">
+                        <div class="d-flex flex-column h-100 p-5">
+                            <h4 class="mb-4 lh-1">${photographer.givenName} ${photographer.familyName}</h4>
+                            <ul class="d-flex list-unstyled mt-auto mb-0">
                                 <li class="d-flex align-items-center me-3">
                                     <small><a href="/photographer/${photographer.id}">Visa</a></small>
                                 </li>

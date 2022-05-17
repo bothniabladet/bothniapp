@@ -10,6 +10,13 @@ import se.ltu.student.extensions.respondFMT
 import se.ltu.student.models.Image
 import se.ltu.student.models.Images
 
+@kotlinx.serialization.Serializable
+data class SearchResultItem(val title: String)
+
+fun Image.toSearchResultItem(): SearchResultItem {
+    return SearchResultItem(this.caption)
+}
+
 fun Application.configureModuleSearch() {
     routing {
         route("/search") {
@@ -21,9 +28,11 @@ fun Application.configureModuleSearch() {
                 val query = call.parameters["query"] ?: ""
 
                 val images = transaction {
-                    Images.caption like "%query%"
+                    Image.find {
+                        Images.caption like "%${query}%"
+                    }.map(Image::toSearchResultItem)
                 }
-                call.respondFMT(FreeMarkerContent("search.ftl", mapOf("query" to query, "images" to images)))
+                call.respond(images)
             }
         }
     }
