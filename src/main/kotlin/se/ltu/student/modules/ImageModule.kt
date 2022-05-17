@@ -147,7 +147,7 @@ fun Application.configureModuleImage() {
                     }
 
                     post {
-                        val id = UUID.fromString(call.parameters.getOrFail("id"))
+                        val id = getIdOrFail()
 
                         val formParameters = call.receiveParameters()
 
@@ -172,11 +172,8 @@ fun Application.configureModuleImage() {
 
                         call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
-                        val redirect = call.parameters["redirect"]
-                        if (redirect != null)
-                            call.respondRedirect(redirect)
-                        else
-                            call.respondRedirect("/image/${id}")
+                        if (!redirectIfPossible())
+                            call.respondRedirect(call.request.uri.dropLast(5))
                     }
                 }
 

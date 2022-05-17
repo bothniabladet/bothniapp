@@ -14,8 +14,14 @@ data class ImageSourceModel constructor(
     val id: String,
     val name: String,
     val website: String?,
+    val photographers: List<PhotographerModel>,
     val images: List<ImageModel>
 )
+
+// Workaround for recursive initializer violation
+fun resolve(photographers: SizedIterable<Photographer>): List<PhotographerModel> {
+    return photographers.map(Photographer::toModel)
+}
 
 class ImageSource(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : UUIDEntityClass<ImageSource>(ImageSources)
@@ -23,8 +29,9 @@ class ImageSource(id: EntityID<UUID>) : UUIDEntity(id) {
     var name by ImageSources.name
     var website by ImageSources.website
     val images by Image optionalReferrersOn Images.imageSource
+    val photographers by Photographer optionalReferrersOn Photographers.imageSource
 
-    fun toModel(loadChildren: Boolean = false) = ImageSourceModel(id.toString(), name, website, if (loadChildren) resolve(images) else listOf())
+    fun toModel(loadChildren: Boolean = false) = ImageSourceModel(id.toString(), name, website, if (loadChildren) resolve(photographers) else listOf(), if (loadChildren) resolve(images) else listOf())
 }
 
 object ImageSources : UUIDTable() {

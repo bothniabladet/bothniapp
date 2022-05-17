@@ -3,7 +3,7 @@
 <#import "../_layout.ftl" as layout />
 <@layout.header>
     <@section.defaultsection title="Redigera profil">
-        <div class="container" style="max-width: 500px">
+        <div class="container mt-4" style="max-width: 500px">
             <form action="/profile/edit" method="post">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control rounded-4" id="floatingUserIdentity" value="${user.id!""}" disabled>

@@ -4,6 +4,12 @@
 
 <@layout.header>
     <@section.defaultsection title="${photographer.givenName} ${photographer.familyName}">
+        <div class="d-flex justify-content-center align-items-center">
+            <#if photographer.phone??><span class="me-3"><strong>Telefon</strong>: ${photographer.phone}</span></#if>
+            <#if photographer.email??><span><strong>E-post</strong>: ${photographer.email}</span></#if>
+            <#if photographer.imageSource??><span><strong>Bildkälla</strong>: <a href="/source/${photographer.imageSource.name}">${photographer.imageSource.name}</a></span></#if>
+            <a class="btn btn-sm btn-light border px-3 ms-auto" href="/photographer/${photographer.id}/edit">Redigera</a>
+        </div>
         <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
             <#list photographer.images as image>
                 <div class="col">

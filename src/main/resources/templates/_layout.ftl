@@ -63,7 +63,7 @@
                     </div>
                 </noscript>
                 <div class="toast-container position-absolute p-3 top-0 start-50 translate-middle-x" style="z-index: 11">
-                    <div class="toast bg-${state.volatileNotification.type} bg-opacity-50" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast bg-${state.volatileNotification.type} text-white" role="alert" aria-live="assertive" aria-atomic="true">
                         <#if (state.volatileNotification.title)??>
                         <div class="toast-header">
                             <strong class="me-auto">${state.volatileNotification.title}</strong>
@@ -77,7 +77,7 @@
                         </div>
                         <#if (state.volatileNotification.title)??>
                         <#else>
-                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                         </div>
                         </#if>
                         </div>

@@ -26,7 +26,7 @@
 
                     <div class="form-floating mb-3">
                         <select class="form-select rounded-4" id="categoryFormControlInput" name="category">
-                            <option disabled>Välj en kategori</option>
+                            <option disabled>Välj kategori</option>
                             <option <#if !image.category??>selected</#if> value="none">Okategoriserat</option>
                             <#list categories as category>
                                 <option value="${category.id}" <#if category.id == (image.category.id)!"">selected</#if>>${category.name}</option>
@@ -37,7 +37,7 @@
 
                     <div class="form-floating mb-3">
                         <select class="form-select rounded-4" id="photographerFormControlInput" name="photographer">
-                            <option disabled>Välj en fotograf</option>
+                            <option disabled>Välj fotograf</option>
                             <option <#if !image.photographer??>selected</#if> value="none">Ej angiven</option>
                             <#list photographers as photographer>
                                 <option value="${photographer.id}" <#if photographer.id == (image.photographer.id)!"">selected</#if>>${photographer.givenName} ${photographer.familyName}</option>
@@ -48,7 +48,7 @@
 
                     <div class="form-floating mb-3">
                         <select class="form-select rounded-4" id="imageSourceFormControlInput" name="imageSource">
-                            <option disabled>Välj en bildkälla</option>
+                            <option disabled>Välj bildkälla</option>
                             <option <#if !image.imageSource??>selected</#if> value="none">Intern</option>
                             <#list imageSources as imageSource>
                                 <option value="${imageSource.id}" <#if imageSource.id == (image.imageSource.id)!"">selected</#if>>${imageSource.name}</option>
