@@ -6,15 +6,15 @@
         <div class="row">
             <div class="col-md-6 col-12">
                 <figure class="figure">
-                    <img src="/archive/image/${image.id}/preview" class="img-fluid" alt="">
+                    <img src="/image/${image.id}/preview" class="img-fluid" alt="">
                     <figcaption class="figure-caption mt-1">${image.caption!""}</figcaption>
                 </figure>
             </div>
             <div class="col-md-6 col-12">
-                <a class="btn btn-outline-primary border-0" href="/archive/image/${image.id}/edit"><i class="bi-pencil ms-auto" title="Redigera bild"></i></a>
-                <a class="btn btn-outline-primary border-0" href="/archive/image/${image.id}/download"><i class="bi-download ms-auto" title="Ladda ned bild"></i></a>
+                <a class="btn btn-outline-primary border-0" href="/image/${image.id}/edit"><i class="bi-pencil ms-auto" title="Redigera bild"></i></a>
+                <a class="btn btn-outline-primary border-0" href="/image/${image.id}/download"><i class="bi-download ms-auto" title="Ladda ned bild"></i></a>
                 <#if image.parent??>
-                    <form class="d-inline" action="/archive/image/${image.id}/decouple" method="post">
+                    <form class="d-inline" action="/image/${image.id}/decouple" method="post">
                         <button class="btn btn-outline-primary border-0"><i class="bi-diagram-2 ms-auto" title="Frikoppla"></i></button>
                     </form>
                 </#if>
@@ -24,14 +24,14 @@
                 <dl>
                     <#if image.parent??>
                     <dt>Original</dt>
-                    <dd><a href="/archive/image/${image.parent.id}">${image.parent.caption!""}</a></dd>
+                    <dd><a href="/image/${image.parent.id}">${image.parent.caption!""}</a></dd>
                     </#if>
                     <dt>Kategori</dt>
                     <dd><#if image.category??><a href="/archive/${(image.category.id)!""}">${(image.category.name)!""}</a><#else><em><a href="/archive/uncategorized">Okategoriserat</a></em></#if></dd>
                     <dt>Fotograf</dt>
-                    <dd><#if image.photographer??><a href="/archive/photographer/${(image.photographer.id)!""}">${(image.photographer.givenName)!""} ${(image.photographer.familyName)!""}</a><#else><em>Ej angiven</em></#if></dd>
+                    <dd><#if image.photographer??><a href="/photographer/${(image.photographer.id)!""}">${(image.photographer.givenName)!""} ${(image.photographer.familyName)!""}</a><#else><em>Ej angiven</em></#if></dd>
                     <dt>Bildkälla</dt>
-                    <dd><#if image.imageSource??><a href="/archive/source/${(image.imageSource.id)!""}">${(image.imageSource.name)!""}</a><#else>Intern</#if></dd>
+                    <dd><#if image.imageSource??><a href="/source/${(image.imageSource.id)!""}">${(image.imageSource.name)!""}</a><#else>Intern</#if></dd>
                     <dt>Filstorlek</dt>
                     <dd><#if image.size??>${(image.size)!""}<#else><em>Filstorlek saknas</em></#if></dd>
                     <dt>Bildstorlek</dt>
@@ -46,9 +46,9 @@
                     <div class="list-group list-group-flush">
                         <div class="list-group-item"><h5 class="mb-0">Varianter</h5></div>
                         <#list image.variants as variant>
-                            <a href="/archive/image/${variant.id}" class="list-group-item list-group-item-action">${variant.caption}</a>
+                            <a href="/image/${variant.id}" class="list-group-item list-group-item-action">${variant.caption}</a>
                         </#list>
-                        <a href="/archive/image/${image.id}/variant" class="list-group-item list-group-item-action text-primary">Ny variant...</a>
+                        <a href="/image/${image.id}/variant" class="list-group-item list-group-item-action text-primary">Ny variant...</a>
                     </div>
                 </#if>
             </div>

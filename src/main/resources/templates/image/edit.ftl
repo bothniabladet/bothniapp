@@ -10,12 +10,12 @@
         <div class="row">
             <div class="col-md-6 col-12">
                 <figure class="figure">
-                    <img src="/archive/image/${image.id}/preview" class="img-fluid" alt="">
+                    <img src="/image/${image.id}/preview" class="img-fluid" alt="">
                     <figcaption class="figure-caption mt-1">${image.caption!""}</figcaption>
                 </figure>
             </div>
             <div class="col-md-6 col-12">
-                <form action="/archive/image/${image.id}/edit<#if redirect??>?redirect=${redirect}</#if>" method="post">
+                <form action="/image/${image.id}/edit<#if redirect??>?redirect=${redirect}</#if>" method="post">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control rounded-4" id="captionFormControlInput" name="caption" placeholder="Katt i Maxikasse..." value="${image.caption!""}">
                         <label for="captionFormControlInput">Bildtext</label>
@@ -65,7 +65,7 @@
                 <hr />
                 <div>
                     <button class="btn btn-outline-danger" id="deleteButton">Radera bild <i class="bi-trash3 ms-1"></i></button>
-                    <form id="deletionChallenge" action="/archive/image/${image.id}/delete<#if redirect??>?redirect=${redirect}</#if>" method="post" hidden>
+                    <form id="deletionChallenge" action="/image/${image.id}/delete<#if redirect??>?redirect=${redirect}</#if>" method="post" hidden>
                         <#if image.variants?size == 0>
                         <#else>
                             <p class="fw-bold">Bilden har ${image.variants?size} <#if image.variants?size == 1>variant<#else>varianter</#if> som också kommer att raderas. För att undvika att en variant raderas, öppna denna och klicka på &quot;frikoppla&quot;.</p>

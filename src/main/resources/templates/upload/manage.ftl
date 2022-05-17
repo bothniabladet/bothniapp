@@ -8,7 +8,7 @@
                 <div class="row row-cols-1 row-cols-lg-2 align-items-stretch g-4 py-5">
                     <#list upload.images as image>
                         <div class="col">
-                            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg border-0" style="background-image: url('/archive/image/${image.id}/preview'); min-height: 350px;">
+                            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg border-0" style="background-image: url('/image/${image.id}/preview'); min-height: 350px;">
                                 <div class="d-flex flex-column h-100 text-dark">
                                     <h4 class="mt-0 mb-4 lh-1 fw-bold mt-4 mx-4 text-shadow-1 text-white bg-dark p-2">${image.caption!""}</h4>
                                     <ul class="d-flex list-unstyled mt-auto bg-light px-4 py-2 mb-0">
@@ -18,7 +18,7 @@
                                             <small><strong>Bildkälla</strong>: ${(image.imageSource.name)!"Intern"}</small>
                                         </li>
                                         <li class="d-flex align-items-center">
-                                            <small><a class="btn btn-primary btn-sm rounded-4" href="/archive/image/${image.id}/edit?redirect=/upload/${upload.id}">Redigera</a></small>
+                                            <small><a class="btn btn-primary btn-sm rounded-4" href="/image/${image.id}/edit?redirect=/upload/${upload.id}">Redigera</a></small>
                                         </li>
                                     </ul>
                                 </div>

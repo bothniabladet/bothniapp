@@ -15,12 +15,4 @@ fun Application.module() {
     configureMonitoring()
     configureSerialization()
     configureAuthentication()
-
-    // Modules
-    configureModuleAuthentication()
-    configureModuleUser()
-    configureModuleArchive()
-    configureModuleSearch()
-    configureModuleUpload()
-    configureModuleConfig()
 }

@@ -2,7 +2,7 @@
 <#import "../_layout.ftl" as layout />
 
 <@layout.header>
-    <form class="g-5" action="/archive/image/${parent}/variant" method="post" enctype="multipart/form-data">
+    <form class="g-5" action="/image/${parent}/variant" method="post" enctype="multipart/form-data">
         <div class="input-group mb-3">
             <label for="formFile" class="form-label"></label>
             <input class="form-control" type="file" id="formFile" name="image" />
