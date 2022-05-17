@@ -141,7 +141,7 @@ fun Application.configureModuleImage() {
                         call.respondFMT(
                             FreeMarkerContent(
                                 "image/edit.ftl",
-                                mapOf("image" to image, "categories" to categories, "photographers" to photographers, "imageSources" to imageSources, "redirect" to call.parameters["redirect"])
+                                mapOf("image" to image, "categories" to categories, "photographers" to photographers, "imageSources" to imageSources)
                             )
                         )
                     }

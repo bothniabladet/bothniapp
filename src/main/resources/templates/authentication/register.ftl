@@ -2,7 +2,7 @@
 <@layout.header>
     <div class="container" style="max-width: 500px;">
         <h1 class="mt-md-5 mt-4 mb-4">Skapa konto</h1>
-        <form action="/register<#if redirect??>?redirect=${redirect}</#if>" method="post">
+        <form method="post">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control rounded-4" name="givenName" id="floatingGivenName" placeholder="Anders" autocomplete="given-name">
                 <label for="floatingInput">Förnamn</label>

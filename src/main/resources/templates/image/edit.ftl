@@ -2,7 +2,6 @@
 <#-- @ftlvariable name="photographers" type="kotlin.collections.List<se.ltu.student.models.PhotographerModel>" -->
 <#-- @ftlvariable name="imageSources" type="kotlin.collections.List<se.ltu.student.models.ImageSourceModel>" -->
 <#-- @ftlvariable name="image" type="se.ltu.student.models.ImageModel" -->
-<#-- @ftlvariable name="redirect" type="String" -->
 <#import "../_layout.ftl" as layout />
 <#import '../directives/section.ftl' as section>
 <@layout.header>
@@ -15,7 +14,7 @@
                 </figure>
             </div>
             <div class="col-md-6 col-12">
-                <form action="/image/${image.id}/edit<#if redirect??>?redirect=${redirect}</#if>" method="post">
+                <form method="post">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control rounded-4" id="captionFormControlInput" name="caption" placeholder="Katt i Maxikasse..." value="${image.caption!""}">
                         <label for="captionFormControlInput">Bildtext</label>

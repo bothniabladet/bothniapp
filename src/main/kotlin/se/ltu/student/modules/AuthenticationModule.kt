@@ -27,7 +27,7 @@ fun Application.configureModuleAuthentication() {
             if (call.sessions.get<UserSession>() != null) {
                 call.respondRedirect("/profile")
             } else {
-                call.respondFMT(FreeMarkerContent("authentication/login.ftl", mapOf("redirect" to call.parameters["redirect"])))
+                call.respondFMT(FreeMarkerContent("authentication/login.ftl", null))
             }
         }
 
