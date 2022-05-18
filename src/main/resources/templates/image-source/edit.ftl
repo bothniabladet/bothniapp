@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="imageSource" type="se.ltu.student.models.ImageSourceModel" -->
+<#-- @ftlvariable name="imageSource" type="se.ltu.student.models.imagesource.ImageSourceModel" -->
 <#import "../directives/section.ftl" as section />
 <#import "../_layout.ftl" as layout />
 <@layout.header>

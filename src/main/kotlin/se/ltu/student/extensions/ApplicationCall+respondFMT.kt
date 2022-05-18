@@ -4,9 +4,6 @@ import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
-import io.ktor.util.*
-import se.ltu.student.plugins.UserNotification
-import se.ltu.student.plugins.UserNotifications
 import se.ltu.student.plugins.UserSession
 
 fun FreeMarkerContent.expand(injectedItems: Map<String, Any?>): FreeMarkerContent {

@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="photographer" type="se.ltu.student.models.PhotographerModel" -->
+<#-- @ftlvariable name="photographer" type="se.ltu.student.models.photographer.PhotographerModel" -->
 <#import "../directives/section.ftl" as section />
 <#import "../_layout.ftl" as layout />
 

@@ -1,11 +1,11 @@
 package se.ltu.student.dao
 
-import kotlinx.coroutines.*
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.*
-import org.jetbrains.exposed.sql.transactions.experimental.*
 import io.ktor.server.application.*
-import se.ltu.student.models.*
+import kotlinx.coroutines.Dispatchers
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.models.category.CategoryTable
 import se.ltu.student.models.image.ImageTable
 import se.ltu.student.models.imagesource.ImageSourceTable

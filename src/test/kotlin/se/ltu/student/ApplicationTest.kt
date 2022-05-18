@@ -1,11 +1,9 @@
 package se.ltu.student
 
-import io.ktor.http.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import kotlin.test.*
 import io.ktor.server.testing.*
-import se.ltu.student.plugins.*
+import se.ltu.student.plugins.configureRouting
+import kotlin.test.Test
 
 class ApplicationTest {
     @Test

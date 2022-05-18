@@ -2,7 +2,6 @@ package se.ltu.student.routes.upload
 
 import io.ktor.http.content.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -18,7 +17,6 @@ import se.ltu.student.models.upload.toModel
 import se.ltu.student.models.user.UserEntity
 import se.ltu.student.routes.getAuthenticatedUserIdOrFail
 import java.io.File
-import java.util.*
 
 fun Route.createUploadRoute(storagePath: String) {
     get {

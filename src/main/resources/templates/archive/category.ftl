@@ -1,5 +1,5 @@
-<#-- @ftlvariable name="category" type="se.ltu.student.models.CategoryModel" -->
-<#-- @ftlvariable name="images" type="kotlin.collections.List<se.ltu.student.models.ImageModel>" -->
+<#-- @ftlvariable name="category" type="se.ltu.student.models.category.CategoryModel" -->
+<#-- @ftlvariable name="images" type="kotlin.collections.List<se.ltu.student.models.image.ImageModel>" -->
 <#import "../directives/section.ftl" as section />
 <#import "../_layout.ftl" as layout />
 

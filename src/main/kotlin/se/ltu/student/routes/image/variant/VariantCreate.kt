@@ -33,7 +33,7 @@ fun Route.createVariantRoute(storagePath: String) {
             multipartData.forEachPart { part ->
                 when (part) {
                     is PartData.FileItem -> {
-                        var fileName = part.originalFileName as String
+                        val fileName = part.originalFileName as String
                         val fileExtension = File(fileName).extension
                         val fileBytes = part.streamProvider().readBytes()
 

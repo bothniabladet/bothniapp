@@ -3,9 +3,7 @@ package se.ltu.student.routes.category
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.notInSubQuery
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction

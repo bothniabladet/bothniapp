@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="category" type="se.ltu.student.models.CategoryModel" -->
+<#-- @ftlvariable name="category" type="se.ltu.student.models.category.CategoryModel" -->
 <#import "../../_layout.ftl" as layout />
 <@layout.header>
     <h1>Categories</h1>

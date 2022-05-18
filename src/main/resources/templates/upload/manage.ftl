@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="upload" type="se.ltu.student.models.UploadModel" -->
+<#-- @ftlvariable name="upload" type="se.ltu.student.models.upload.UploadModel" -->
 <#import "../directives/section.ftl" as section />
 <#import "../_layout.ftl" as layout />
 <@layout.header>
