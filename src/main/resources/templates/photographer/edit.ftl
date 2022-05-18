@@ -7,19 +7,23 @@
         <div class="container mt-4" style="max-width: 500px">
             <form method="post">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" name="givenName" id="floatingGivenName" placeholder="Anders" value="${photographer.givenName!""}">
+                    <input type="text" class="form-control rounded-4" name="givenName" id="floatingGivenName"
+                           placeholder="Anders" value="${photographer.givenName!""}">
                     <label for="floatingInput">Förnamn</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" name="familyName" id="floatingFamilyName" placeholder="Andersson" value="${photographer.familyName!""}">
+                    <input type="text" class="form-control rounded-4" name="familyName" id="floatingFamilyName"
+                           placeholder="Andersson" value="${photographer.familyName!""}">
                     <label for="floatingInput">Efternamn</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control rounded-4" name="email" id="floatingEmail" placeholder="namn@exempel.se" value="${photographer.email!""}">
+                    <input type="email" class="form-control rounded-4" name="email" id="floatingEmail"
+                           placeholder="namn@exempel.se" value="${photographer.email!""}">
                     <label for="floatingInput">E-postadress</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" name="phone" id="floatingPhone" value="${photographer.phone!""}">
+                    <input type="text" class="form-control rounded-4" name="phone" id="floatingPhone"
+                           value="${photographer.phone!""}">
                     <label for="floatingPhone">Telefonnummer</label>
                 </div>
 
@@ -28,7 +32,8 @@
                         <option disabled>Välj bildkälla</option>
                         <option <#if !photographer.imageSource??>selected</#if> value="none">Ingen</option>
                         <#list imageSources as imageSource>
-                            <option value="${imageSource.id}" <#if imageSource.id == (photographer.imageSource.id)!"">selected</#if>>${imageSource.name}</option>
+                            <option value="${imageSource.id}"
+                                    <#if imageSource.id == (photographer.imageSource.id)!"">selected</#if>>${imageSource.name}</option>
                         </#list>
                     </select>
                     <label for="imageSourceFormControlInput">Bildkälla</label>

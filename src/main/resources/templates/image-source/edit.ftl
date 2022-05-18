@@ -6,11 +6,13 @@
         <div class="container mt-4" style="max-width: 500px">
             <form method="post">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" name="name" id="floatingName" placeholder="Bildföretaget AB" value="${imageSource.name!""}">
+                    <input type="text" class="form-control rounded-4" name="name" id="floatingName"
+                           placeholder="Bildföretaget AB" value="${imageSource.name!""}">
                     <label for="floatingInput">Namn</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" name="website" id="floatingWebsite" placeholder="https://www.exempel.se" value="${imageSource.website!""}">
+                    <input type="text" class="form-control rounded-4" name="website" id="floatingWebsite"
+                           placeholder="https://www.exempel.se" value="${imageSource.website!""}">
                     <label for="floatingWebsite">Hemsida</label>
                 </div>
 

@@ -25,6 +25,13 @@ fun FreeMarkerContent.expand(injectedItems: Map<String, Any?>): FreeMarkerConten
 public suspend inline fun ApplicationCall.respondFMT(content: FreeMarkerContent) {
     val session = sessions.get<UserSession>()
     val volatileNotification = getAndDestroyVolatileNotificationIfPresent()
-    val newContent = content.expand(mapOf("state" to mapOf("isAuthenticated" to (session != null), "volatileNotification" to volatileNotification)))
+    val newContent = content.expand(
+        mapOf(
+            "state" to mapOf(
+                "isAuthenticated" to (session != null),
+                "volatileNotification" to volatileNotification
+            )
+        )
+    )
     respond(newContent)
 }

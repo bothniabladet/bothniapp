@@ -17,7 +17,8 @@ import se.ltu.student.models.user.UserTable
 object DatabaseFactory {
     fun init(environment: ApplicationEnvironment) {
         val driverClassName = "org.postgresql.Driver"
-        val jdbcURL = environment.config.propertyOrNull("ktor.database.jdbcURL")?.getString() ?: "jdbc:postgresql://localhost:5432/bothniabladet"
+        val jdbcURL = environment.config.propertyOrNull("ktor.database.jdbcURL")?.getString()
+            ?: "jdbc:postgresql://localhost:5432/bothniabladet"
         val user = environment.config.propertyOrNull("ktor.database.user")?.getString() ?: "postgres"
         val password = environment.config.propertyOrNull("ktor.database.password")?.getString() ?: "postgres"
         val database = Database.connect(url = jdbcURL, driver = driverClassName, user = user, password = password)
@@ -25,7 +26,15 @@ object DatabaseFactory {
 
             //SchemaUtils.drop(Photographers, ImageSources, ImageUploads, Uploads, Images, Categories, Users, inBatch = true)
 
-            SchemaUtils.create(UserTable, ImageSourceTable, PhotographerTable, CategoryTable, ImageTable, UploadTable, ImageUploadTable)
+            SchemaUtils.create(
+                UserTable,
+                ImageSourceTable,
+                PhotographerTable,
+                CategoryTable,
+                ImageTable,
+                UploadTable,
+                ImageUploadTable
+            )
         }
     }
 

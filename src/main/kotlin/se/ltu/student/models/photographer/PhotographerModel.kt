@@ -16,4 +16,11 @@ data class PhotographerModel constructor(
     val images: List<ImageModel>
 )
 
-fun PhotographerEntity.toModel(loadChildren: Boolean = false) = PhotographerModel(id.toString(), givenName, familyName, email, phone, imageSource?.toModel(), if (loadChildren) resolve(images).filter { image -> image.published && image.parent == null } else listOf())
+fun PhotographerEntity.toModel(loadChildren: Boolean = false) = PhotographerModel(
+    id.toString(),
+    givenName,
+    familyName,
+    email,
+    phone,
+    imageSource?.toModel(),
+    if (loadChildren) resolve(images).filter { image -> image.published && image.parent == null } else listOf())

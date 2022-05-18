@@ -23,26 +23,43 @@ fun Route.categoryBySlugRoute() {
         val slug = getSlugOrFail()
 
         if (slug == "uncategorized") {
-            val category = CategoryModel("uncategorized", null, "Okategoriserat", "uncategorized", "Bilder som inte tillhör en kategori")
+            val category = CategoryModel(
+                "uncategorized",
+                null,
+                "Okategoriserat",
+                "uncategorized",
+                "Bilder som inte tillhör en kategori"
+            )
 
             val images = transaction {
                 ImageEntity.find {
                     (ImageTable.category eq null) and (ImageTable.id notInSubQuery ImageUploadTable.slice(
-                        ImageUploadTable.image).selectAll())
+                        ImageUploadTable.image
+                    ).selectAll())
                 }.map(ImageEntity::toModel)
             }
 
-            return@get call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category, "images" to images)))
+            return@get call.respondFMT(
+                FreeMarkerContent(
+                    "archive/category.ftl",
+                    mapOf("category" to category, "images" to images)
+                )
+            )
         }
 
         val category = transaction {
-            CategoryEntity.find(CategoryTable.slug eq slug).firstOrNull() ?: CategoryEntity.findById(UUID.fromString(slug)) ?: throw Error("No such category.")
+            CategoryEntity.find(CategoryTable.slug eq slug).firstOrNull() ?: CategoryEntity.findById(
+                UUID.fromString(
+                    slug
+                )
+            ) ?: throw Error("No such category.")
         }
 
         val images = transaction {
             ImageEntity.find {
                 (ImageTable.category eq category.id) and (ImageTable.parent eq null) and (ImageTable.id notInSubQuery ImageUploadTable.slice(
-                    ImageUploadTable.image).selectAll())
+                    ImageUploadTable.image
+                ).selectAll())
             }.map(ImageEntity::toModel)
         }
 

@@ -6,19 +6,23 @@
         <div class="container mt-4" style="max-width: 500px">
             <form action="/profile/edit" method="post">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" id="floatingUserIdentity" value="${user.id!""}" disabled>
+                    <input type="text" class="form-control rounded-4" id="floatingUserIdentity" value="${user.id!""}"
+                           disabled>
                     <label for="floatingUserIdentity">Användaridentitet</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" name="givenName" id="floatingGivenName" placeholder="Anders" value="${user.givenName!""}">
+                    <input type="text" class="form-control rounded-4" name="givenName" id="floatingGivenName"
+                           placeholder="Anders" value="${user.givenName!""}">
                     <label for="floatingInput">Förnamn</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" name="familyName" id="floatingFamilyName" placeholder="Andersson" value="${user.familyName!""}">
+                    <input type="text" class="form-control rounded-4" name="familyName" id="floatingFamilyName"
+                           placeholder="Andersson" value="${user.familyName!""}">
                     <label for="floatingInput">Efternamn</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control rounded-4" name="email" id="floatingEmail" placeholder="namn@exempel.se" value="${user.email!""}" disabled>
+                    <input type="email" class="form-control rounded-4" name="email" id="floatingEmail"
+                           placeholder="namn@exempel.se" value="${user.email!""}" disabled>
                     <label for="floatingInput">E-postadress</label>
                 </div>
 

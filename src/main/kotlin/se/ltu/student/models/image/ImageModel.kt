@@ -26,7 +26,22 @@ data class ImageModel constructor(
     val published: Boolean
 )
 
-fun ImageEntity.toModel(loadChildren: Boolean = true) = ImageModel(id.toString(), resolve(parent), caption, description, path, size, width, height, category?.toModel(), photographer?.toModel(false), imageSource?.toModel(), metadata, if (loadChildren) resolve(parent, variants) else listOf(), upload.empty())
+fun ImageEntity.toModel(loadChildren: Boolean = true) = ImageModel(
+    id.toString(),
+    resolve(parent),
+    caption,
+    description,
+    path,
+    size,
+    width,
+    height,
+    category?.toModel(),
+    photographer?.toModel(false),
+    imageSource?.toModel(),
+    metadata,
+    if (loadChildren) resolve(parent, variants) else listOf(),
+    upload.empty()
+)
 
 // Workaround for recursive initializer violations
 fun resolve(image: ImageEntity?): ImageModel? {

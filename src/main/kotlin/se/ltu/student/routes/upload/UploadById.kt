@@ -33,6 +33,16 @@ fun Route.uploadByIdRoute() {
             ImageSourceEntity.all().map(ImageSourceEntity::toModel)
         }
 
-        call.respondFMT(FreeMarkerContent("upload/manage.ftl", mapOf("upload" to upload, "categories" to categories, "photographers" to photographers, "imageSources" to imageSources)))
+        call.respondFMT(
+            FreeMarkerContent(
+                "upload/manage.ftl",
+                mapOf(
+                    "upload" to upload,
+                    "categories" to categories,
+                    "photographers" to photographers,
+                    "imageSources" to imageSources
+                )
+            )
+        )
     }
 }

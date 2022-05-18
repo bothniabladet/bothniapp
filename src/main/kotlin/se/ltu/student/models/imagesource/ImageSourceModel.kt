@@ -16,7 +16,13 @@ data class ImageSourceModel constructor(
     val images: List<ImageModel>
 )
 
-fun ImageSourceEntity.toModel(loadChildren: Boolean = false) = ImageSourceModel(id.toString(), name, website, if (loadChildren) resolve(photographers) else listOf(), if (loadChildren) resolve(images) else listOf())
+fun ImageSourceEntity.toModel(loadChildren: Boolean = false) = ImageSourceModel(
+    id.toString(),
+    name,
+    website,
+    if (loadChildren) resolve(photographers) else listOf(),
+    if (loadChildren) resolve(images) else listOf()
+)
 
 // Workaround for recursive initializer violation
 fun resolve(photographers: SizedIterable<PhotographerEntity>): List<PhotographerModel> {

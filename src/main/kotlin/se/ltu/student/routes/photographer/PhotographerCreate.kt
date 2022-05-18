@@ -4,8 +4,8 @@ import io.ktor.server.routing.*
 
 fun Route.createPhotographerRoute() {
     route("/new") {
-        get {  }
+        get { }
 
-        post {  }
+        post { }
     }
 }

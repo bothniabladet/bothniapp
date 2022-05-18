@@ -8,14 +8,17 @@ data class UserSession(val name: String, val model: UserModel) : Principal
 
 data class UserNotification(val title: String?, val description: String, val type: String = "info") {
     companion object {
-        fun success(text: String):UserNotification {
+        fun success(text: String): UserNotification {
             return UserNotification(null, text, "success")
         }
 
-        fun error(text: String):UserNotification {
+        fun error(text: String): UserNotification {
             return UserNotification(null, text, "danger")
         }
     }
 }
 
-data class UserNotifications(val volatile: UserNotification? = null, val persistent: Map<String, UserNotification> = mapOf())
+data class UserNotifications(
+    val volatile: UserNotification? = null,
+    val persistent: Map<String, UserNotification> = mapOf()
+)

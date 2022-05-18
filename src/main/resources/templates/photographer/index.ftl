@@ -7,12 +7,15 @@
         <div class="d-flex justify-content-start align-items-center">
             <#if photographer.phone??><span class="me-3"><strong>Telefon</strong>: ${photographer.phone}</span></#if>
             <#if photographer.email??><span><strong>E-post</strong>: ${photographer.email}</span></#if>
-            <#if photographer.imageSource??><span><strong>Bildkälla</strong>: <a href="/image-source/${photographer.imageSource.id}">${photographer.imageSource.name}</a></span></#if>
+            <#if photographer.imageSource??><span><strong>Bildkälla</strong>: <a
+                        href="/image-source/${photographer.imageSource.id}">${photographer.imageSource.name}</a>
+                </span></#if>
         </div>
         <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
             <#list photographer.images as image>
                 <div class="col">
-                    <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('/image/${image.id}/preview');">
+                    <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
+                         style="background-image: url('/image/${image.id}/preview');">
                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                             <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">${image.caption!""}</h2>
                             <ul class="d-flex list-unstyled mt-auto">
@@ -23,7 +26,8 @@
                                     <small><a class="text-white" href="/image/${image.id}">Visa</a></small>
                                 </li>
                                 <li class="d-flex align-items-center">
-                                    <small><a class="text-white" href="/image/${image.id}/edit?redirect=/photographer/${photographer.id!""}">Redigera</a></small>
+                                    <small><a class="text-white"
+                                              href="/image/${image.id}/edit?redirect=/photographer/${photographer.id!""}">Redigera</a></small>
                                 </li>
                             </ul>
                         </div>
@@ -32,7 +36,8 @@
             </#list>
         </div>
         <#if photographer.images?size == 0>
-            <div class="ratio text-center px-3 border rounded-5 text-muted" style="border-style: dashed !important; --bs-aspect-ratio: 50%;">
+            <div class="ratio text-center px-3 border rounded-5 text-muted"
+                 style="border-style: dashed !important; --bs-aspect-ratio: 50%;">
                 <div class="d-flex align-items-center justify-content-center flex-column w-100 h-100">
                     <h3>Inga bilder</h3>
                     <p>Denna fotograf har inga bilder.</p>

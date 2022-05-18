@@ -44,7 +44,12 @@ fun Route.updateImageRoute() {
             call.respondFMT(
                 FreeMarkerContent(
                     "image/edit.ftl",
-                    mapOf("image" to image, "categories" to categories, "photographers" to photographers, "imageSources" to imageSources)
+                    mapOf(
+                        "image" to image,
+                        "categories" to categories,
+                        "photographers" to photographers,
+                        "imageSources" to imageSources
+                    )
                 )
             )
         }

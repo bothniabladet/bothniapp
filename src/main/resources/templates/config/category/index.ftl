@@ -5,7 +5,7 @@
     <section>
         <h3>Add category</h3>
         <form action="/config/category" method="post">
-            <input type="text" name="name" />
+            <input type="text" name="name"/>
             <button type="submit">Save</button>
         </form>
     </section>

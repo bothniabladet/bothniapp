@@ -27,11 +27,14 @@ fun Route.batchUpdateUploadImagesRoute() {
         transaction {
             UploadEntity.findById(id)?.images?.forEach { image ->
                 if (category != null)
-                    image.category = if (category != "none") CategoryEntity.findById(category.parseUUIDOrFail()) else null
+                    image.category =
+                        if (category != "none") CategoryEntity.findById(category.parseUUIDOrFail()) else null
                 if (photographer != null)
-                    image.photographer = if (photographer != "none") PhotographerEntity.findById(photographer.parseUUIDOrFail()) else null
+                    image.photographer =
+                        if (photographer != "none") PhotographerEntity.findById(photographer.parseUUIDOrFail()) else null
                 if (imageSource != null)
-                    image.imageSource = if (imageSource != "none") ImageSourceEntity.findById(imageSource.parseUUIDOrFail()) else null
+                    image.imageSource =
+                        if (imageSource != "none") ImageSourceEntity.findById(imageSource.parseUUIDOrFail()) else null
             }
         }
 

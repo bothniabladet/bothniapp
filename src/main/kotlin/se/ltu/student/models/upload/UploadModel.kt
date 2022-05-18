@@ -17,7 +17,8 @@ data class UploadModel constructor(
     val created: String
 )
 
-fun UploadEntity.toModel() = UploadModel(id.toString(), user?.toModel(), images.map(ImageEntity::toModel), relativeDateTime(createdAt))
+fun UploadEntity.toModel() =
+    UploadModel(id.toString(), user?.toModel(), images.map(ImageEntity::toModel), relativeDateTime(createdAt))
 
 fun relativeDateTime(then: LocalDateTime): String {
     val now = LocalDateTime.now()

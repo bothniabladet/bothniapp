@@ -30,7 +30,12 @@ fun Route.updatePhotographerRoute() {
                 ImageSourceEntity.all().map(ImageSourceEntity::toModel)
             }
 
-            call.respondFMT(FreeMarkerContent("photographer/edit.ftl", mapOf("photographer" to photographer, "imageSources" to imageSources)))
+            call.respondFMT(
+                FreeMarkerContent(
+                    "photographer/edit.ftl",
+                    mapOf("photographer" to photographer, "imageSources" to imageSources)
+                )
+            )
         }
 
         post {
@@ -46,7 +51,8 @@ fun Route.updatePhotographerRoute() {
                 photographer.phone = formParameters.getOrFail("phone").ifEmpty { null }
 
                 val imageSource = formParameters.getOrFail("imageSource")
-                photographer.imageSource = if (imageSource != "none") ImageSourceEntity.findById(UUID.fromString(imageSource)) else null
+                photographer.imageSource =
+                    if (imageSource != "none") ImageSourceEntity.findById(UUID.fromString(imageSource)) else null
             }
 
             setVolatileNotification(UserNotification.success("Ändringar sparade."))

@@ -5,7 +5,7 @@
     <form class="g-5" action="/image/${parent}/variant" method="post" enctype="multipart/form-data">
         <div class="input-group mb-3">
             <label for="formFile" class="form-label"></label>
-            <input class="form-control" type="file" id="formFile" name="image" />
+            <input class="form-control" type="file" id="formFile" name="image"/>
         </div>
         <div class="d-grid gap-4 inputBox text-center">
             <button type="submit" class="btn btn-primary">Ladda upp</button>

@@ -10,4 +10,5 @@ data class UserModel constructor(
     val updatedAt: String
 )
 
-fun UserEntity.toModel() = UserModel(id.toString(), givenName, familyName, email, createdAt.toString(), updatedAt.toString())
+fun UserEntity.toModel() =
+    UserModel(id.toString(), givenName, familyName, email, createdAt.toString(), updatedAt.toString())

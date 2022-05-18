@@ -12,7 +12,7 @@ const createResultElement = (item) => {
 };
 
 const showSearchResults = (result) => {
-    let children = [ ...resultsElement.children ];
+    let children = [...resultsElement.children];
     children.forEach(element => {
         resultsElement.removeChild(element)
     });
@@ -24,7 +24,7 @@ const showSearchResults = (result) => {
 };
 
 const search = (query) => {
-    return fetch(`/search?query=${query}`, { method: 'post' })
+    return fetch(`/search?query=${query}`, {method: 'post'})
         .then(res => res.json());
 };
 

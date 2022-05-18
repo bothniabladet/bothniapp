@@ -15,7 +15,7 @@ import se.ltu.student.routes.getAuthenticatedUserIdOrFail
 import se.ltu.student.routes.getAuthenticatedUserOrFail
 
 fun Route.updateUserRoute() {
-    route ("/edit") {
+    route("/edit") {
         get {
             val user = getAuthenticatedUserOrFail()
             call.respondFMT(FreeMarkerContent("profile/edit.ftl", mapOf("user" to user)))

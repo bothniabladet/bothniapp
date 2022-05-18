@@ -3,7 +3,8 @@
 <@layout.header>
     <@section.defaultsection title="Sök">
         <div class="container" style="max-width: 500px;">
-            <input id="search" name="query" type="text" class="form-control form-control-lg rounded-5" placeholder="Type to search..." value="${query!""}">
+            <input id="search" name="query" type="text" class="form-control form-control-lg rounded-5"
+                   placeholder="Type to search..." value="${query!""}">
         </div>
 
         <ul id="results"></ul>
