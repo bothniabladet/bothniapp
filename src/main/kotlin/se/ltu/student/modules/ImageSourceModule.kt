@@ -65,7 +65,7 @@ fun Application.configureModuleImageSource() {
                     post {
                         ImageSourceModule.update(this)
 
-                        call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
+                        setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
                         if (!redirectIfPossible())
                             call.respondRedirect(call.request.uri.dropLast(5))

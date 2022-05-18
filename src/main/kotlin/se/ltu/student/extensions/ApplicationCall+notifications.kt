@@ -2,6 +2,7 @@ package se.ltu.student.extensions
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
+import io.ktor.util.pipeline.*
 import se.ltu.student.plugins.UserNotification
 import se.ltu.student.plugins.UserNotifications
 
@@ -9,7 +10,7 @@ fun UserNotifications.with(volatile: UserNotification?): UserNotifications {
     return UserNotifications(volatile, this.persistent)
 }
 
-public inline fun ApplicationCall.setVolatileNotification(userNotification: UserNotification) {
+fun ApplicationCall.setVolatileNotification(userNotification: UserNotification) {
     val existing = sessions.get<UserNotifications>()
 
     if (existing == null)
@@ -18,7 +19,11 @@ public inline fun ApplicationCall.setVolatileNotification(userNotification: User
         sessions.set(existing.with(userNotification))
 }
 
-public inline fun ApplicationCall.getAndDestroyVolatileNotificationIfPresent(): UserNotification? {
+fun PipelineContext<Unit, ApplicationCall>.setVolatileNotification(userNotification: UserNotification) {
+    call.setVolatileNotification(userNotification)
+}
+
+fun ApplicationCall.getAndDestroyVolatileNotificationIfPresent(): UserNotification? {
     val userNotifications = sessions.get<UserNotifications>() ?: return null
 
     if (userNotifications.volatile == null)

@@ -112,7 +112,7 @@ fun Application.configureModuleImage() {
                             }
                         }
 
-                        call.setVolatileNotification(UserNotification.success("Variant tillagd."))
+                        setVolatileNotification(UserNotification.success("Variant tillagd."))
 
                         call.respondRedirect("/image/${parent}")
                     }
@@ -170,7 +170,7 @@ fun Application.configureModuleImage() {
                                 if (imageSource != "none") ImageSource.findById(UUID.fromString(imageSource)) else null
                         }
 
-                        call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
+                        setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
                         if (!redirectIfPossible())
                             call.respondRedirect(call.request.uri.dropLast(5))
@@ -187,7 +187,7 @@ fun Application.configureModuleImage() {
                         image.parent = null
                     }
 
-                    call.setVolatileNotification(UserNotification.success("Bild frikopplad."))
+                    setVolatileNotification(UserNotification.success("Bild frikopplad."))
 
                     call.respondRedirect("/image/${id}")
                 }
@@ -203,7 +203,7 @@ fun Application.configureModuleImage() {
                         image.delete()
                     }
 
-                    call.setVolatileNotification(UserNotification.success("Bild borttagen."))
+                    setVolatileNotification(UserNotification.success("Bild borttagen."))
 
                     val redirect = call.parameters["redirect"]
                     if (redirect != null)

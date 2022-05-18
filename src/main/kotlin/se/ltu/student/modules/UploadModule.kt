@@ -119,7 +119,7 @@ fun Application.configureModuleUpload() {
                         }
                     }
 
-                    call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
+                    setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
                     call.respondRedirect("/upload/$id")
                 }
@@ -135,7 +135,7 @@ fun Application.configureModuleUpload() {
                         upload.delete()
                     }
 
-                    call.setVolatileNotification(UserNotification.success("Uppladdning borttagen."))
+                    setVolatileNotification(UserNotification.success("Uppladdning borttagen."))
 
                     call.respondRedirect("/upload")
                 }
@@ -146,7 +146,7 @@ fun Application.configureModuleUpload() {
                         Upload.findById(id)?.delete()
                     }
 
-                    call.setVolatileNotification(UserNotification.success("Uppladdade bilder publicerade."))
+                    setVolatileNotification(UserNotification.success("Uppladdade bilder publicerade."))
 
                     call.respondRedirect("/upload")
                 }

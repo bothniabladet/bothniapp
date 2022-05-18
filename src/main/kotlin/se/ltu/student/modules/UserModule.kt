@@ -43,7 +43,7 @@ fun Application.configureModuleUser() {
                             user.familyName = familyName
                         }
 
-                        call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
+                        setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
                         call.respondRedirect("/profile")
                     }

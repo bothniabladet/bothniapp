@@ -86,7 +86,7 @@ fun Application.configureModuleAuthentication() {
                     }
                 }
 
-                call.setVolatileNotification(UserNotification.success("Konto skapat! Du kan nu logga in."))
+                setVolatileNotification(UserNotification.success("Konto skapat! Du kan nu logga in."))
 
                 call.respondRedirect("/login")
             }

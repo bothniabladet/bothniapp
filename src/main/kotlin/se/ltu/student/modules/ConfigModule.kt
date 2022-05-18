@@ -41,7 +41,7 @@ fun Application.configureModuleConfig() {
                             }
                         }
 
-                        call.setVolatileNotification(UserNotification.success("Kategori tillagd."))
+                        setVolatileNotification(UserNotification.success("Kategori tillagd."))
 
                         call.respondRedirect("/config/category")
                     }
@@ -72,7 +72,7 @@ fun Application.configureModuleConfig() {
                                 category.slug = slug
                             }
 
-                            call.setVolatileNotification(UserNotification.success("Ändringar sparade."))
+                            setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
                             call.respondRedirect("/config/category")
                         }
