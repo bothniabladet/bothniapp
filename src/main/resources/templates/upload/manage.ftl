@@ -42,7 +42,7 @@
                             </h2>
                             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
-                                    <form action="/upload/${upload.id}/apply" method="post">
+                                    <form action="/upload/${upload.id}/batch-update" method="post">
                                     <div class="form-floating mb-3">
                                         <select class="form-select rounded-4" id="categoryFormControlInput" name="category">
                                             <option disabled>Välj en kategori</option>
@@ -66,7 +66,7 @@
                             </h2>
                             <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
-                                    <form action="/upload/${upload.id}/apply" method="post">
+                                    <form action="/upload/${upload.id}/batch-update" method="post">
                                     <div class="form-floating mb-3">
                                         <select class="form-select rounded-4" id="photographerFormControlInput" name="photographer">
                                             <option disabled>Välj en fotograf</option>
@@ -90,7 +90,7 @@
                             </h2>
                             <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
-                                    <form action="/upload/${upload.id}/apply" method="post">
+                                    <form action="/upload/${upload.id}/batch-update" method="post">
                                     <div class="form-floating mb-3">
                                         <select class="form-select rounded-4" id="imageSourceFormControlInput" name="imageSource">
                                             <option disabled>Välj en bildkälla</option>

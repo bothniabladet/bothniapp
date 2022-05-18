@@ -19,7 +19,7 @@
                                     <small><a class="text-white" href="/image/${image.id}">Visa</a></small>
                                 </li>
                                 <li class="d-flex align-items-center">
-                                    <small><a class="text-white" href="/image/${image.id}/edit?redirect=/archive/${category.slug!""}">Redigera</a></small>
+                                    <small><a class="text-white" href="/image/${image.id}/edit?redirect=/category/${category.slug!""}">Redigera</a></small>
                                 </li>
                             </ul>
                         </div>

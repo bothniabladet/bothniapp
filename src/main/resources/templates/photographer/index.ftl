@@ -7,7 +7,7 @@
         <div class="d-flex justify-content-start align-items-center">
             <#if photographer.phone??><span class="me-3"><strong>Telefon</strong>: ${photographer.phone}</span></#if>
             <#if photographer.email??><span><strong>E-post</strong>: ${photographer.email}</span></#if>
-            <#if photographer.imageSource??><span><strong>Bildkälla</strong>: <a href="/source/${photographer.imageSource.id}">${photographer.imageSource.name}</a></span></#if>
+            <#if photographer.imageSource??><span><strong>Bildkälla</strong>: <a href="/image-source/${photographer.imageSource.id}">${photographer.imageSource.name}</a></span></#if>
         </div>
         <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
             <#list photographer.images as image>

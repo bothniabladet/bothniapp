@@ -1,4 +1,4 @@
-package se.ltu.student.routes.image
+package se.ltu.student.routes.image.variant
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -10,19 +10,18 @@ import se.ltu.student.plugins.UserNotification
 import se.ltu.student.routes.getIdOrFail
 import se.ltu.student.routes.redirectIfPossible
 
-fun Route.deleteImageRoute(storagePath: String) {
-    post("/delete") {
+fun Route.decoupleVariantRoute() {
+    post("/decouple") {
         val id = getIdOrFail()
 
         transaction {
             val image = ImageEntity.findById(id) ?: throw Error("Image not found.")
-            image.deleteImage(storagePath)
-            image.delete()
+            image.parent = null
         }
 
-        setVolatileNotification(UserNotification.success("Bild raderad."))
+        setVolatileNotification(UserNotification.success("Bild frikopplad."))
 
         if (!redirectIfPossible())
-            call.respondRedirect("/")
+            call.respondRedirect("/image/${id}")
     }
 }

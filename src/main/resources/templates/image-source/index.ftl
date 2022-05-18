@@ -22,7 +22,7 @@
                                     <small><a href="/photographer/${photographer.id}">Visa</a></small>
                                 </li>
                                 <li class="d-flex align-items-center">
-                                    <small><a href="/photographer/${photographer.id}/edit?redirect=/source/${imageSource.id!""}">Redigera</a></small>
+                                    <small><a href="/photographer/${photographer.id}/edit?redirect=/image-source/${imageSource.id!""}">Redigera</a></small>
                                 </li>
                             </ul>
                         </div>
@@ -53,7 +53,7 @@
                                     <small><a class="text-white" href="/image/${image.id}">Visa</a></small>
                                 </li>
                                 <li class="d-flex align-items-center">
-                                    <small><a class="text-white" href="/image/${image.id}/edit?redirect=/source/${imageSource.id!""}">Redigera</a></small>
+                                    <small><a class="text-white" href="/image/${image.id}/edit?redirect=/image-source/${imageSource.id!""}">Redigera</a></small>
                                 </li>
                             </ul>
                         </div>

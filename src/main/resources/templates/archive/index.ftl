@@ -10,7 +10,7 @@
                     <div>
                         <h4 class="fw-bold mb-0">${category.name!""}</h4>
                         <p>${category.description!""}</p>
-                        <a href="/archive/${category.slug}" class="icon-link">
+                        <a href="/category/${category.slug}" class="icon-link">
                             Call to action
                             <i class="bi bi-chevron-right"></i>
                         </a>
@@ -22,7 +22,7 @@
                 <div>
                     <h4 class="fw-bold mb-0">Okategoriserat</h4>
                     <p></p>
-                    <a href="/archive/uncategorized" class="icon-link">
+                    <a href="/category/uncategorized" class="icon-link">
                         Call to action
                         <i class="bi bi-chevron-right"></i>
                     </a>
