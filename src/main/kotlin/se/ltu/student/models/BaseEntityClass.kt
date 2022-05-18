@@ -1,6 +1,9 @@
 package se.ltu.student.models
 
-import org.jetbrains.exposed.dao.*
+import org.jetbrains.exposed.dao.EntityChangeType
+import org.jetbrains.exposed.dao.EntityHook
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.toEntity
 
 abstract class BaseEntityClass<E : BaseEntity>(table: BaseTable) : UUIDEntityClass<E>(table) {
     init {

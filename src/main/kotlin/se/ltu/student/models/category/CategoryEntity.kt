@@ -1,6 +1,7 @@
 package se.ltu.student.models.category
 
-import org.jetbrains.exposed.dao.*
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 

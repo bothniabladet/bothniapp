@@ -2,7 +2,8 @@ package se.ltu.student.models.image
 
 import com.drew.imaging.ImageMetadataReader
 import org.jetbrains.exposed.dao.id.EntityID
-import se.ltu.student.models.*
+import se.ltu.student.models.BaseEntity
+import se.ltu.student.models.BaseEntityClass
 import se.ltu.student.models.category.CategoryEntity
 import se.ltu.student.models.imagesource.ImageSourceEntity
 import se.ltu.student.models.photographer.PhotographerEntity
