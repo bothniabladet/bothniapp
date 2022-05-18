@@ -1,12 +1,8 @@
 package se.ltu.student.modules
 
-import io.ktor.http.*
-import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -14,15 +10,17 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
-import se.ltu.student.extensions.setVolatileNotification
-import se.ltu.student.models.*
-import se.ltu.student.plugins.UserNotification
-import java.io.File
+import se.ltu.student.models.category.CategoryEntity
+import se.ltu.student.models.category.CategoryModel
+import se.ltu.student.models.category.CategoryTable
+import se.ltu.student.models.category.toModel
+import se.ltu.student.models.image.ImageEntity
+import se.ltu.student.models.image.ImageTable
+import se.ltu.student.models.image.toModel
+import se.ltu.student.models.upload.ImageUploadTable
 import java.util.*
 
 fun Application.configureModuleArchive() {
-    val storagePath: String = environment.config.propertyOrNull("ktor.deployment.storagePath")?.getString() ?: "/uploads"
-
     routing {
         authenticate("auth-session") {
             route("/archive") {
@@ -30,7 +28,7 @@ fun Application.configureModuleArchive() {
                     // Categories
                     // -- "events" (dates) OR image "groups"
                     val categories = transaction {
-                        Category.all().map(Category::toModel)
+                        CategoryEntity.all().map(CategoryEntity::toModel)
                     }
                     call.respondFMT(FreeMarkerContent("archive/index.ftl", mapOf("categories" to categories)))
                 }
@@ -41,21 +39,21 @@ fun Application.configureModuleArchive() {
                     if (slug == "uncategorized") {
                         val category = CategoryModel("uncategorized", null, "Okategoriserat", "uncategorized", "Bilder som inte tillhör en kategori")
                         val images = transaction {
-                            Image.find {
-                                (Images.category eq null) and (Images.id notInSubQuery ImageUploads.slice(ImageUploads.image).selectAll())
-                            }.map(Image::toModel)
+                            ImageEntity.find {
+                                (ImageTable.category eq null) and (ImageTable.id notInSubQuery ImageUploadTable.slice(ImageUploadTable.image).selectAll())
+                            }.map(ImageEntity::toModel)
                         }
                         call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category, "images" to images)))
                         return@get
                     }
 
                     val category = transaction {
-                        Category.find(Categories.slug eq slug).firstOrNull() ?: Category.findById(UUID.fromString(slug)) ?: throw Error("No such category.")
+                        CategoryEntity.find(CategoryTable.slug eq slug).firstOrNull() ?: CategoryEntity.findById(UUID.fromString(slug)) ?: throw Error("No such category.")
                     }
                     val images = transaction {
-                        Image.find {
-                            (Images.category eq category.id) and (Images.parent eq null) and (Images.id notInSubQuery ImageUploads.slice(ImageUploads.image).selectAll())
-                        }.map(Image::toModel)
+                        ImageEntity.find {
+                            (ImageTable.category eq category.id) and (ImageTable.parent eq null) and (ImageTable.id notInSubQuery ImageUploadTable.slice(ImageUploadTable.image).selectAll())
+                        }.map(ImageEntity::toModel)
                     }
                     call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category, "images" to images)))
                 }

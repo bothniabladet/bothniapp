@@ -7,13 +7,13 @@ import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
-import se.ltu.student.models.Image
-import se.ltu.student.models.Images
+import se.ltu.student.models.image.ImageEntity
+import se.ltu.student.models.image.ImageTable
 
 @kotlinx.serialization.Serializable
 data class SearchResultItem(val title: String)
 
-fun Image.toSearchResultItem(): SearchResultItem {
+fun ImageEntity.toSearchResultItem(): SearchResultItem {
     return SearchResultItem(this.caption)
 }
 
@@ -28,9 +28,9 @@ fun Application.configureModuleSearch() {
                 val query = call.parameters["query"] ?: ""
 
                 val images = transaction {
-                    Image.find {
-                        Images.caption like "%${query}%"
-                    }.map(Image::toSearchResultItem)
+                    ImageEntity.find {
+                        ImageTable.caption like "%${query}%"
+                    }.map(ImageEntity::toSearchResultItem)
                 }
                 call.respond(images)
             }

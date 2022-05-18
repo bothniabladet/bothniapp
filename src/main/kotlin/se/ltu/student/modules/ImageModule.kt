@@ -13,6 +13,15 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.*
+import se.ltu.student.models.category.CategoryEntity
+import se.ltu.student.models.category.toModel
+import se.ltu.student.models.image.ImageEntity
+import se.ltu.student.models.image.ImageMetadata
+import se.ltu.student.models.image.toModel
+import se.ltu.student.models.imagesource.ImageSourceEntity
+import se.ltu.student.models.imagesource.toModel
+import se.ltu.student.models.photographer.PhotographerEntity
+import se.ltu.student.models.photographer.toModel
 import se.ltu.student.plugins.UserNotification
 import java.io.File
 import java.util.*
@@ -28,7 +37,7 @@ fun Application.configureModuleImage() {
                     val id = UUID.fromString(call.parameters.getOrFail("id"))
 
                     val image = transaction {
-                        Image.findById(id)?.toModel()
+                        ImageEntity.findById(id)?.toModel()
                     } ?: throw Error("Image not found.")
 
                     call.respondFMT(FreeMarkerContent("image/index.ftl", mapOf("image" to image)))
@@ -38,7 +47,7 @@ fun Application.configureModuleImage() {
                     val id = UUID.fromString(call.parameters.getOrFail("id"))
 
                     val imagePath = transaction {
-                        Image.findById(id)?.path
+                        ImageEntity.findById(id)?.path
                     } ?: throw Error("Image not found.")
 
                     val file = File("uploads/$imagePath")
@@ -53,7 +62,7 @@ fun Application.configureModuleImage() {
                     val id = UUID.fromString(call.parameters.getOrFail("id"))
 
                     val image = transaction {
-                        Image.findById(id)
+                        ImageEntity.findById(id)
                     } ?: throw Error("Image not found.")
 
                     // TODO: Perform additional checks
@@ -93,8 +102,8 @@ fun Application.configureModuleImage() {
 
                                     // Create entry for image
                                     val image = transaction {
-                                        Image.new {
-                                            val parentImage = Image.findById(parent)
+                                        ImageEntity.new {
+                                            val parentImage = ImageEntity.findById(parent)
                                             this.parent = parentImage
                                             this.caption = fileName
                                             this.description = parentImage?.description
@@ -125,17 +134,17 @@ fun Application.configureModuleImage() {
                         val id = UUID.fromString(call.parameters.getOrFail("id"))
 
                         val image = transaction {
-                            Image.findById(id)?.toModel()
+                            ImageEntity.findById(id)?.toModel()
                         } ?: throw Error("Image not found.")
 
                         val categories = transaction {
-                            Category.all().map(Category::toModel)
+                            CategoryEntity.all().map(CategoryEntity::toModel)
                         }
                         val photographers = transaction {
-                            Photographer.all().map(Photographer::toModel)
+                            PhotographerEntity.all().map(PhotographerEntity::toModel)
                         }
                         val imageSources = transaction {
-                            ImageSource.all().map(ImageSource::toModel)
+                            ImageSourceEntity.all().map(ImageSourceEntity::toModel)
                         }
 
                         call.respondFMT(
@@ -158,16 +167,16 @@ fun Application.configureModuleImage() {
                         val imageSource = formParameters.getOrFail("imageSource")
 
                         transaction {
-                            val image = Image.findById(id) ?: throw Error("Image not found.")
+                            val image = ImageEntity.findById(id) ?: throw Error("Image not found.")
                             image.caption = caption
                             image.description = description
 
                             image.category =
-                                if (category != "none") Category.findById(UUID.fromString(category)) else null
+                                if (category != "none") CategoryEntity.findById(UUID.fromString(category)) else null
                             image.photographer =
-                                if (photographer != "none") Photographer.findById(UUID.fromString(photographer)) else null
+                                if (photographer != "none") PhotographerEntity.findById(UUID.fromString(photographer)) else null
                             image.imageSource =
-                                if (imageSource != "none") ImageSource.findById(UUID.fromString(imageSource)) else null
+                                if (imageSource != "none") ImageSourceEntity.findById(UUID.fromString(imageSource)) else null
                         }
 
                         setVolatileNotification(UserNotification.success("Ändringar sparade."))
@@ -183,7 +192,7 @@ fun Application.configureModuleImage() {
                     val id = UUID.fromString(call.parameters.getOrFail("id"))
 
                     transaction {
-                        val image = Image.findById(id) ?: throw Error("Image not found.")
+                        val image = ImageEntity.findById(id) ?: throw Error("Image not found.")
                         image.parent = null
                     }
 
@@ -198,7 +207,7 @@ fun Application.configureModuleImage() {
                     val id = UUID.fromString(call.parameters.getOrFail("id"))
 
                     transaction {
-                        val image = Image.findById(id) ?: throw Error("Image not found.")
+                        val image = ImageEntity.findById(id) ?: throw Error("Image not found.")
                         image.deleteImage(storagePath)
                         image.delete()
                     }

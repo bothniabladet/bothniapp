@@ -10,7 +10,8 @@ import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
-import se.ltu.student.models.Category
+import se.ltu.student.models.category.CategoryEntity
+import se.ltu.student.models.category.toModel
 import se.ltu.student.plugins.UserNotification
 import java.util.*
 
@@ -25,7 +26,7 @@ fun Application.configureModuleConfig() {
                 route("/category") {
                     get {
                         val categories = transaction {
-                            Category.all().map(Category::toModel)
+                            CategoryEntity.all().map(CategoryEntity::toModel)
                         }
                         call.respondFMT(FreeMarkerContent("config/category/index.ftl", mapOf("categories" to categories)))
                     }
@@ -36,7 +37,7 @@ fun Application.configureModuleConfig() {
                         val name = formParameters.getOrFail("name")
 
                         transaction {
-                            Category.new {
+                            CategoryEntity.new {
                                 this.name = name
                             }
                         }
@@ -51,7 +52,7 @@ fun Application.configureModuleConfig() {
                             val id = UUID.fromString(call.parameters.getOrFail("id"))
 
                             val category = transaction {
-                                Category.findById(id)?.toModel() ?: throw Error("No such category.")
+                                CategoryEntity.findById(id)?.toModel() ?: throw Error("No such category.")
                             }
                             call.respondFMT(FreeMarkerContent("config/category/edit.ftl", mapOf("category" to category)))
                         }
@@ -66,7 +67,7 @@ fun Application.configureModuleConfig() {
                             val slug = formParameters.getOrFail("slug")
 
                             transaction {
-                                val category = Category.findById(id) ?: throw Error("No such category.")
+                                val category = CategoryEntity.findById(id) ?: throw Error("No such category.")
                                 category.name = name
                                 category.description = description
                                 category.slug = slug

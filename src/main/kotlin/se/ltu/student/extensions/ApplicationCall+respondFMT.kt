@@ -24,7 +24,6 @@ fun FreeMarkerContent.expand(injectedItems: Map<String, Any?>): FreeMarkerConten
     return FreeMarkerContent(this.template, mutableMap.toMap(), this.etag, this.contentType)
 }
 
-@OptIn(InternalAPI::class)
 @JvmName("respondWithType")
 public suspend inline fun ApplicationCall.respondFMT(content: FreeMarkerContent) {
     val session = sessions.get<UserSession>()

@@ -12,7 +12,7 @@ import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
-import se.ltu.student.models.User
+import se.ltu.student.models.user.UserEntity
 import se.ltu.student.plugins.UserNotification
 import se.ltu.student.plugins.UserSession
 
@@ -78,7 +78,7 @@ fun Application.configureModuleAuthentication() {
                 val passwordHash = hashPassword(password)
 
                 transaction {
-                    User.new {
+                    UserEntity.new {
                         this.givenName = givenName
                         this.familyName = familyName
                         this.email = email

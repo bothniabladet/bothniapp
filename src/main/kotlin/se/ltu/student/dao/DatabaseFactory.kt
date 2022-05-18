@@ -6,6 +6,13 @@ import org.jetbrains.exposed.sql.transactions.*
 import org.jetbrains.exposed.sql.transactions.experimental.*
 import io.ktor.server.application.*
 import se.ltu.student.models.*
+import se.ltu.student.models.category.CategoryTable
+import se.ltu.student.models.image.ImageTable
+import se.ltu.student.models.imagesource.ImageSourceTable
+import se.ltu.student.models.photographer.PhotographerTable
+import se.ltu.student.models.upload.ImageUploadTable
+import se.ltu.student.models.upload.UploadTable
+import se.ltu.student.models.user.UserTable
 
 object DatabaseFactory {
     fun init(environment: ApplicationEnvironment) {
@@ -18,13 +25,7 @@ object DatabaseFactory {
 
             //SchemaUtils.drop(Photographers, ImageSources, ImageUploads, Uploads, Images, Categories, Users, inBatch = true)
 
-            SchemaUtils.create(Users)
-            SchemaUtils.create(ImageSources)
-            SchemaUtils.create(Photographers)
-            SchemaUtils.create(Categories)
-            SchemaUtils.create(Images)
-            SchemaUtils.create(Uploads)
-            SchemaUtils.create(ImageUploads)
+            SchemaUtils.create(UserTable, ImageSourceTable, PhotographerTable, CategoryTable, ImageTable, UploadTable, ImageUploadTable)
         }
     }
 

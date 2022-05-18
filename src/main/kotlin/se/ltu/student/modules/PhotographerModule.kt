@@ -11,9 +11,10 @@ import io.ktor.util.pipeline.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
-import se.ltu.student.models.ImageSource
-import se.ltu.student.models.Photographer
-import se.ltu.student.models.PhotographerModel
+import se.ltu.student.models.imagesource.ImageSourceEntity
+import se.ltu.student.models.photographer.PhotographerEntity
+import se.ltu.student.models.photographer.PhotographerModel
+import se.ltu.student.models.photographer.toModel
 import se.ltu.student.plugins.UserNotification
 import java.util.*
 
@@ -22,7 +23,7 @@ object PhotographerModule {
         val id = UUID.fromString(context.call.parameters.getOrFail("id"))
 
         return transaction {
-            Photographer.findById(id)?.toModel(true)
+            PhotographerEntity.findById(id)?.toModel(true)
         } ?: throw Error("Photographer not found.")
     }
 
@@ -30,7 +31,7 @@ object PhotographerModule {
         val form = context.call.receiveParameters()
 
         transaction {
-            val photographer = Photographer.findById(context.getIdOrFail()) ?: throw Error("No such photographer.")
+            val photographer = PhotographerEntity.findById(context.getIdOrFail()) ?: throw Error("No such photographer.")
             photographer.givenName = form.getOrFail("givenName")
             photographer.familyName = form.getOrFail("familyName")
 
@@ -38,15 +39,12 @@ object PhotographerModule {
             photographer.phone = form.getOrFail("phone").ifEmpty { null }
 
             val imageSource = form.getOrFail("imageSource")
-            photographer.imageSource = if (imageSource != "none") ImageSource.findById(UUID.fromString(imageSource)) else null
+            photographer.imageSource = if (imageSource != "none") ImageSourceEntity.findById(UUID.fromString(imageSource)) else null
         }
     }
 }
 
 fun Application.configureModulePhotographer() {
-    val storagePath: String =
-        environment.config.propertyOrNull("ktor.deployment.storagePath")?.getString() ?: "/uploads"
-
     routing {
         authenticate("auth-session") {
             route("/photographer/{id}") {

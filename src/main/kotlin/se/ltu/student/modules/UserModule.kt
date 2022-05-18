@@ -10,7 +10,7 @@ import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
-import se.ltu.student.models.User
+import se.ltu.student.models.user.UserEntity
 import se.ltu.student.plugins.UserNotification
 import se.ltu.student.plugins.UserSession
 import java.util.*
@@ -38,7 +38,7 @@ fun Application.configureModuleUser() {
                         val familyName = formParameters.getOrFail("familyName")
 
                         transaction {
-                            val user = User.findById(id) ?: throw Error("No such user.")
+                            val user = UserEntity.findById(id) ?: throw Error("No such user.")
                             user.givenName = givenName
                             user.familyName = familyName
                         }

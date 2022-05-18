@@ -4,15 +4,12 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
-
 import io.ktor.server.response.*
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.setVolatileNotification
-import se.ltu.student.models.User
-import se.ltu.student.models.UserModel
-import se.ltu.student.models.Users
-import java.util.UUID
+import se.ltu.student.models.user.UserEntity
+import se.ltu.student.models.user.UserTable
+import se.ltu.student.models.user.toModel
 
 fun verifyPassword(password: String, passwordHash: CharArray): Boolean {
     return BCrypt.verifyer().verify(password.toCharArray(), passwordHash).verified
@@ -29,7 +26,7 @@ fun Application.configureAuthentication() {
 
             validate { credentials ->
                 val user = transaction {
-                    User.find { Users.email eq credentials.name }.firstOrNull()
+                    UserEntity.find { UserTable.email eq credentials.name }.firstOrNull()
                 }
 
                 if (user == null) {

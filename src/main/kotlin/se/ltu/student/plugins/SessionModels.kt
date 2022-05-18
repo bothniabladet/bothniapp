@@ -1,7 +1,7 @@
 package se.ltu.student.plugins
 
 import io.ktor.server.auth.*
-import se.ltu.student.models.UserModel
+import se.ltu.student.models.user.UserModel
 
 // Session data classes
 data class UserSession(val name: String, val model: UserModel) : Principal

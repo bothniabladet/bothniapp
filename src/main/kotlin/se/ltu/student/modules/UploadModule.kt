@@ -12,6 +12,18 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.*
+import se.ltu.student.models.category.CategoryEntity
+import se.ltu.student.models.category.toModel
+import se.ltu.student.models.image.ImageEntity
+import se.ltu.student.models.image.ImageMetadata
+import se.ltu.student.models.imagesource.ImageSourceEntity
+import se.ltu.student.models.imagesource.toModel
+import se.ltu.student.models.photographer.PhotographerEntity
+import se.ltu.student.models.photographer.toModel
+import se.ltu.student.models.upload.UploadEntity
+import se.ltu.student.models.upload.UploadTable
+import se.ltu.student.models.upload.toModel
+import se.ltu.student.models.user.UserEntity
 import se.ltu.student.plugins.UserNotification
 import se.ltu.student.plugins.UserSession
 import java.io.File
@@ -27,9 +39,9 @@ fun Application.configureModuleUpload() {
                 get {
                     val userModel = call.principal<UserSession>()?.model ?: throw Error("Unauthorized")
                     val uploads = transaction {
-                        Upload.find {
-                            Uploads.user eq UUID.fromString(userModel.id)
-                        }.map(Upload::toModel)
+                        UploadEntity.find {
+                            UploadTable.user eq UUID.fromString(userModel.id)
+                        }.map(UploadEntity::toModel)
                     }
                     call.respondFMT(FreeMarkerContent("upload/index.ftl", mapOf("uploads" to uploads)))
                 }
@@ -37,8 +49,8 @@ fun Application.configureModuleUpload() {
                 post {
                     // Get user
                     val userModel = call.principal<UserSession>()?.model ?: throw Error("Unauthorized")
-                    val user = transaction { User.findById(UUID.fromString(userModel.id)) }
-                    val images = arrayListOf<Image>()
+                    val user = transaction { UserEntity.findById(UUID.fromString(userModel.id)) }
+                    val images = arrayListOf<ImageEntity>()
 
                     val multipartData = call.receiveMultipart()
                     multipartData.forEachPart { part ->
@@ -53,7 +65,7 @@ fun Application.configureModuleUpload() {
 
                                 // Create entry for image
                                 val image = transaction {
-                                    Image.new {
+                                    ImageEntity.new {
                                         caption = fileName
                                         size = fileBytes.size
                                         path = "${id}.${fileExtension}"
@@ -71,7 +83,7 @@ fun Application.configureModuleUpload() {
                     }
 
                     val upload = transaction {
-                        Upload.new {
+                        UploadEntity.new {
                             this.user = user
                             this.images = SizedCollection(images)
                         }
@@ -83,17 +95,17 @@ fun Application.configureModuleUpload() {
                 get("/{id}") {
                     val id = UUID.fromString(call.parameters["id"])
                     val upload = transaction {
-                        Upload.findById(id)?.toModel()
+                        UploadEntity.findById(id)?.toModel()
                     }
 
                     val categories = transaction {
-                        Category.all().map(Category::toModel)
+                        CategoryEntity.all().map(CategoryEntity::toModel)
                     }
                     val photographers = transaction {
-                        Photographer.all().map(Photographer::toModel)
+                        PhotographerEntity.all().map(PhotographerEntity::toModel)
                     }
                     val imageSources = transaction {
-                        ImageSource.all().map(ImageSource::toModel)
+                        ImageSourceEntity.all().map(ImageSourceEntity::toModel)
                     }
 
                     call.respondFMT(FreeMarkerContent("upload/manage.ftl", mapOf("upload" to upload, "categories" to categories, "photographers" to photographers, "imageSources" to imageSources)))
@@ -109,13 +121,13 @@ fun Application.configureModuleUpload() {
                     val imageSource = formParameters["imageSource"]
 
                     transaction {
-                        Upload.findById(id)?.images?.forEach { image ->
+                        UploadEntity.findById(id)?.images?.forEach { image ->
                             if (category != null)
-                                image.category = if (category != "none") Category.findById(UUID.fromString(category)) else null
+                                image.category = if (category != "none") CategoryEntity.findById(UUID.fromString(category)) else null
                             if (photographer != null)
-                                image.photographer = if (photographer != "none") Photographer.findById(UUID.fromString(photographer)) else null
+                                image.photographer = if (photographer != "none") PhotographerEntity.findById(UUID.fromString(photographer)) else null
                             if (imageSource != null)
-                                image.imageSource = if (imageSource != "none") ImageSource.findById(UUID.fromString(imageSource)) else null
+                                image.imageSource = if (imageSource != "none") ImageSourceEntity.findById(UUID.fromString(imageSource)) else null
                         }
                     }
 
@@ -127,7 +139,7 @@ fun Application.configureModuleUpload() {
                 post("/{id}/delete") {
                     val id = UUID.fromString(call.parameters["id"])
                     transaction {
-                        val upload = Upload.findById(id) ?: throw Error("No such upload.")
+                        val upload = UploadEntity.findById(id) ?: throw Error("No such upload.")
                         upload.images.forEach {
                             it.deleteImage(storagePath)
                             it.delete()
@@ -143,7 +155,7 @@ fun Application.configureModuleUpload() {
                 post("/{id}/publish") {
                     val id = UUID.fromString(call.parameters["id"])
                     transaction {
-                        Upload.findById(id)?.delete()
+                        UploadEntity.findById(id)?.delete()
                     }
 
                     setVolatileNotification(UserNotification.success("Uppladdade bilder publicerade."))

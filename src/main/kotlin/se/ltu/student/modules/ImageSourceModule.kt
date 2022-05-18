@@ -11,8 +11,9 @@ import io.ktor.util.pipeline.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
-import se.ltu.student.models.ImageSource
-import se.ltu.student.models.ImageSourceModel
+import se.ltu.student.models.imagesource.ImageSourceEntity
+import se.ltu.student.models.imagesource.ImageSourceModel
+import se.ltu.student.models.imagesource.toModel
 import se.ltu.student.plugins.UserNotification
 import java.util.*
 
@@ -21,13 +22,13 @@ object ImageSourceModule {
         val id = UUID.fromString(context.call.parameters.getOrFail("id"))
 
         return transaction {
-            ImageSource.findById(id)?.toModel(true)
+            ImageSourceEntity.findById(id)?.toModel(true)
         } ?: throw Error("Photographer not found.")
     }
 
     fun getAllModels(): List<ImageSourceModel> {
         return transaction {
-            ImageSource.all().map(ImageSource::toModel)
+            ImageSourceEntity.all().map(ImageSourceEntity::toModel)
         }
     }
 
@@ -35,7 +36,7 @@ object ImageSourceModule {
         val form = context.call.receiveParameters()
 
         transaction {
-            val imageSource = ImageSource.findById(context.getIdOrFail()) ?: throw Error("No such image source.")
+            val imageSource = ImageSourceEntity.findById(context.getIdOrFail()) ?: throw Error("No such image source.")
             imageSource.name = form.getOrFail("name")
             imageSource.website = form.getOrFail("website").ifEmpty { null }
         }
@@ -43,9 +44,6 @@ object ImageSourceModule {
 }
 
 fun Application.configureModuleImageSource() {
-    val storagePath: String =
-        environment.config.propertyOrNull("ktor.deployment.storagePath")?.getString() ?: "/uploads"
-
     routing {
         authenticate("auth-session") {
             route("/source/{id}") {
