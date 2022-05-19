@@ -12,6 +12,7 @@ import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.imagesource.ImageSourceEntity
 import se.ltu.student.models.imagesource.toModel
 import se.ltu.student.models.photographer.PhotographerEntity
+import se.ltu.student.models.photographer.toModel
 import se.ltu.student.plugins.UserNotification
 import se.ltu.student.routes.getIdOrFail
 import se.ltu.student.routes.redirectIfPossible
@@ -23,7 +24,7 @@ fun Route.updatePhotographerRoute() {
             val id = getIdOrFail()
 
             val photographer = transaction {
-                PhotographerEntity.findById(id)
+                PhotographerEntity.findById(id)?.toModel() ?: throw Error("No such photographer.")
             }
 
             val imageSources = transaction {

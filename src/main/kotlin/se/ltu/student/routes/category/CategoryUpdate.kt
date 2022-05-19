@@ -15,33 +15,35 @@ import se.ltu.student.plugins.UserNotification
 import se.ltu.student.routes.getIdOrFail
 
 fun Route.updateCategoryRoute() {
-    get {
-        val id = getIdOrFail()
+    route("/edit") {
+        get {
+            val id = getIdOrFail()
 
-        val category = transaction {
-            CategoryEntity.findById(id)?.toModel() ?: throw Error("No such category.")
-        }
-        call.respondFMT(FreeMarkerContent("config/category/edit.ftl", mapOf("category" to category)))
-    }
-
-    post {
-        val id = getIdOrFail()
-
-        val formParameters = call.receiveParameters()
-
-        val name = formParameters.getOrFail("name")
-        val description = formParameters.getOrFail("description")
-        val slug = formParameters.getOrFail("slug")
-
-        transaction {
-            val category = CategoryEntity.findById(id) ?: throw Error("No such category.")
-            category.name = name
-            category.description = description
-            category.slug = slug
+            val category = transaction {
+                CategoryEntity.findById(id)?.toModel() ?: throw Error("No such category.")
+            }
+            call.respondFMT(FreeMarkerContent("config/category/edit.ftl", mapOf("category" to category)))
         }
 
-        setVolatileNotification(UserNotification.success("Ändringar sparade."))
+        post {
+            val id = getIdOrFail()
 
-        call.respondRedirect("/category")
+            val formParameters = call.receiveParameters()
+
+            val name = formParameters.getOrFail("name")
+            val description = formParameters.getOrFail("description")
+            val slug = formParameters.getOrFail("slug")
+
+            transaction {
+                val category = CategoryEntity.findById(id) ?: throw Error("No such category.")
+                category.name = name
+                category.description = description
+                category.slug = slug
+            }
+
+            setVolatileNotification(UserNotification.success("Ändringar sparade."))
+
+            call.respondRedirect("/category")
+        }
     }
 }
