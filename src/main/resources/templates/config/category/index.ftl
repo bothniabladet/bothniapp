@@ -4,7 +4,7 @@
     <h1>Categories</h1>
     <section>
         <h3>Add category</h3>
-        <form action="/config/category" method="post">
+        <form method="post">
             <input type="text" name="name"/>
             <button type="submit">Save</button>
         </form>
