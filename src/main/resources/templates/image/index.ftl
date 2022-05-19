@@ -31,7 +31,7 @@
                     </#if>
                     <dt>Kategori</dt>
                     <dd><#if image.category??><a
-                            href="/category/${(image.category.id)!""}">${(image.category.name)!""}</a><#else><em><a
+                            href="/category/${(image.category.slug)!""}">${(image.category.name)!""}</a><#else><em><a
                                     href="/category/uncategorized">Okategoriserat</a></em></#if></dd>
                     <dt>Fotograf</dt>
                     <dd><#if image.photographer??><a
@@ -54,7 +54,7 @@
 
                 <#if !image.parent??>
                     <div class="list-group list-group-flush">
-                        <div class="list-group-item"><h5 class="mb-0">Varianter</h5></div>
+                        <div class="list-group-item fw-bold">Varianter</div>
                         <#list image.variants as variant>
                             <a href="/image/${variant.id}"
                                class="list-group-item list-group-item-action">${variant.caption}</a>
