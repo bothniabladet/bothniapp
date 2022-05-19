@@ -18,7 +18,7 @@
             </#list>
         </div>
     </@section.defaultsection>
-    <section class="border bg-light rounded container py-4 my-5" style="max-width: 480px">
+    <section class="border rounded-5 container py-4 px-3 my-5" style="max-width: 500px">
         <form action="/upload" method="post" enctype="multipart/form-data">
             <div class="vstack gap-3 mx-auto px-3">
                 <h3 class="mb-0">Ny uppladdning</h3>
