@@ -1,7 +1,6 @@
 package se.ltu.student.routes.photographer
 
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -23,6 +22,6 @@ fun Route.deletePhotographerRoute() {
         setVolatileNotification(UserNotification.success("Fotograf raderad."))
 
         if (!redirectIfPossible())
-            call.respondRedirect(call.request.uri.dropLast(5))
+            call.respondRedirect("/photographer")
     }
 }

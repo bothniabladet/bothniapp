@@ -21,6 +21,6 @@ fun Route.deleteImageSourceRoute() {
         setVolatileNotification(UserNotification.success("Bildkälla raderad."))
 
         if (!redirectIfPossible())
-            call.respondRedirect("/")
+            call.respondRedirect("/image-source")
     }
 }
