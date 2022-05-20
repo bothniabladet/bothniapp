@@ -27,7 +27,7 @@
 
                 <div class="form-floating mb-3">
                     <select class="form-select rounded-4" id="imageSourceFormControlInput" name="imageSource">
-                        <option selected disabled>Välj bildkälla</option>
+                        <option disabled>Välj bildkälla</option>
                         <option value="none">Ingen</option>
                         <#list imageSources as imageSource>
                             <option value="${imageSource.id}">${imageSource.name}</option>
