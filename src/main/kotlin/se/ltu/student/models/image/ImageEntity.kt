@@ -45,8 +45,8 @@ class ImageEntity(id: EntityID<UUID>) : BaseEntity(id, ImageTable) {
         val metadata: com.drew.metadata.Metadata = ImageMetadataReader.readMetadata(file)
         val fields = metadata.directories.associate { dir ->
             dir.name to dir.tags.filter { field ->
-                !field.tagName.contains("Unknown")
-            }.associate { field -> field.tagName to field.description }
+                !field.tagName.contains("Unknown") && field.hasTagName()
+            }.associate { field -> field.tagName to handleNullString(field.description) }
         }
 
         valueFor("Image Width", fields)?.let { width -> this.width = width.replace("[^0-9]".toRegex(), "").toInt() }
@@ -73,4 +73,10 @@ fun valueFor(key: String, fields: Map<String, Map<String, String>>): String? {
             if (field.key.contains(key))
                 return field.value
     return null
+}
+
+fun handleNullString(string: String?): String {
+    if (string == null)
+        return ""
+    return string
 }
