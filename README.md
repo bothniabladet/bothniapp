@@ -1,6 +1,6 @@
 # Bothniapp
 
-An image archive application written using Ktor and Freemarker.
+Image archive application written using Ktor and Freemarker.
 
 ## Configuring
 
