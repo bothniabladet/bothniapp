@@ -11,12 +11,12 @@
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control rounded-4" name="slug" id="floatingSlug"
-                           placeholder="kultur" pattern="[a\-z]*">
+                           placeholder="kultur" pattern="([a-z\-])+">
                     <label for="floatingSlug">URL-vänligt namn</label>
                 </div>
                 <div class="form-floating mb-3">
                     <textarea class="form-control rounded-4" name="description" id="floatingDescription"></textarea>
-                    <label for="floatingDescription">URL-vänligt namn</label>
+                    <label for="floatingDescription">Beskrivning</label>
                 </div>
 
                 <div class="mb-3">
