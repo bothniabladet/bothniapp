@@ -11,7 +11,9 @@ import se.ltu.student.routes.category.categoryRoutes
 import se.ltu.student.routes.image.imageRoutes
 import se.ltu.student.routes.imagesource.imageSourceRoutes
 import se.ltu.student.routes.photographer.photographerRoutes
+import se.ltu.student.routes.profile.profileRoutes
 import se.ltu.student.routes.search.searchRoutes
+import se.ltu.student.routes.system.systemRoutes
 import se.ltu.student.routes.upload.uploadRoutes
 import se.ltu.student.routes.user.userRoutes
 
@@ -39,7 +41,9 @@ fun Application.configureRouting() {
     photographerRoutes()
     searchRoutes()
     uploadRoutes()
+    profileRoutes()
     userRoutes()
+    systemRoutes()
 }
 
 class AuthenticationException : RuntimeException()

@@ -41,7 +41,7 @@ fun Route.categoryBySlugRoute() {
 
             return@get call.respondFMT(
                 FreeMarkerContent(
-                    "archive/category.ftl",
+                    "category/index.ftl",
                     mapOf("category" to category, "images" to images)
                 )
             )
@@ -63,6 +63,6 @@ fun Route.categoryBySlugRoute() {
             }.map(ImageEntity::toModel)
         }
 
-        call.respondFMT(FreeMarkerContent("archive/category.ftl", mapOf("category" to category, "images" to images)))
+        call.respondFMT(FreeMarkerContent("category/index.ftl", mapOf("category" to category, "images" to images)))
     }
 }

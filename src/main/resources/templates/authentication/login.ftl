@@ -1,6 +1,6 @@
 <#import "../_layout.ftl" as layout />
 <@layout.header>
-    <div class="container" style="max-width: 500px;">
+    <div class="container pt-md-5 pt-3 pb-md-5 pb-4" style="max-width: 500px;">
         <h1 class="mt-md-5 mt-4 mb-4">Logga in</h1>
         <form method="post">
             <div class="form-floating mb-3">

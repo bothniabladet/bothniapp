@@ -1,4 +1,4 @@
-package se.ltu.student.routes.user
+package se.ltu.student.routes.profile
 
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
@@ -10,25 +10,19 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.user.UserEntity
-import se.ltu.student.models.user.toModel
 import se.ltu.student.plugins.UserNotification
-import se.ltu.student.routes.getIdOrFail
-import se.ltu.student.routes.redirectIfPossible
+import se.ltu.student.routes.getAuthenticatedUserIdOrFail
+import se.ltu.student.routes.getAuthenticatedUserOrFail
 
-fun Route.updateUserRoute() {
+fun Route.updateProfileRoute() {
     route("/edit") {
         get {
-            val id = getIdOrFail()
-
-            val user = transaction {
-                UserEntity.findById(id)?.toModel() ?: throw Error("No such user.")
-            }
-
-            call.respondFMT(FreeMarkerContent("user/edit.ftl", mapOf("user" to user)))
+            val user = getAuthenticatedUserOrFail()
+            call.respondFMT(FreeMarkerContent("profile/edit.ftl", mapOf("user" to user)))
         }
 
         post {
-            val id = getIdOrFail()
+            val id = getAuthenticatedUserIdOrFail()
 
             val formParameters = call.receiveParameters()
 
@@ -43,8 +37,7 @@ fun Route.updateUserRoute() {
 
             setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
-            if (!redirectIfPossible())
-                call.respondRedirect("/user")
+            call.respondRedirect("/profile")
         }
     }
 }

@@ -9,9 +9,13 @@ fun Application.userRoutes() {
         createUserRoute()
 
         authenticate("auth-session") {
-            route("/profile") {
-                updateUserRoute()
-                userProfileRoute()
+            route("/user") {
+                listUsersRoute()
+
+                route("/{id}") {
+                    updateUserRoute()
+                    deleteUserRoute()
+                }
             }
         }
     }

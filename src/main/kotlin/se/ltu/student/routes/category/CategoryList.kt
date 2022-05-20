@@ -13,6 +13,6 @@ fun Route.listCategoriesRoute() {
         val categories = transaction {
             CategoryEntity.all().map(CategoryEntity::toModel)
         }
-        call.respondFMT(FreeMarkerContent("category/index.ftl", mapOf("categories" to categories)))
+        call.respondFMT(FreeMarkerContent("category/list.ftl", mapOf("categories" to categories)))
     }
 }

@@ -34,7 +34,7 @@
                 </ul>
 
                 <#if (state.isAuthenticated)!false == true>
-                    <div class="text-end"><a href="/config" class="nav-link">Systemkonfiguration</a></div>
+                    <div class="text-end"><a href="/system" class="nav-link">System</a></div>
                     <div class="dropdown text-end">
                         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
                            data-bs-toggle="dropdown" aria-expanded="false">
