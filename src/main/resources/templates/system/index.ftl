@@ -45,7 +45,7 @@
             <div class="col">
                 <div class="card card-cover h-100 overflow-hidden rounded-5 bg-light shadow-lg">
                     <div class="d-flex flex-column h-100 p-5">
-                        <h4 class="mb-4 lh-1">Kategori</h4>
+                        <h4 class="mb-4 lh-1">Kategorier</h4>
                         <ul class="d-flex list-unstyled mt-auto mb-0">
                             <li class="d-flex align-items-center">
                                 <small><a class="me-3" href="/category">Visa kategorier</a></small>
