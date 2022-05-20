@@ -22,7 +22,7 @@
                     </div>
                     <div class="form-floating mb-3">
                         <textarea class="form-control rounded-4" id="descriptionFormControlInput" name="description"
-                                  style="image-height: 80px"
+                                  style="min-height: 80px"
                                   placeholder="Denna katt föredrar att sova i en maxikasse snarare än på ett katträd...">${image.description!""}</textarea>
                         <label for="descriptionFormControlInput">Beskrivning</label>
                     </div>

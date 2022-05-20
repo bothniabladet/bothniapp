@@ -16,7 +16,7 @@
         <title>Bothniabladet</title>
     </head>
     <body>
-    <header class="p-3 mb-3 border-bottom">
+    <header class="py-3 px-md-3 mb-3 border-bottom">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
@@ -28,9 +28,9 @@
                 </a>
 
                 <ul class="nav nav-pills col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="/archive" class="nav-link px-4">Arkiv</a></li>
-                    <li><a href="/search" class="nav-link px-4">Sök</a></li>
-                    <li><a href="/upload" class="nav-link px-4">Bilduppladdning</a></li>
+                    <li><a href="/archive" class="nav-link px-md-4">Arkiv</a></li>
+                    <li><a href="/upload" class="nav-link px-md-4">Bilduppladdning</a></li>
+                    <li><span class="nav-link text-muted px-md-4">Sök</span></li>
                 </ul>
 
                 <#if (state.isAuthenticated)!false == true>
@@ -41,19 +41,19 @@
                             <i class="bi bi-person-circle fs-4"></i>
                         </a>
                         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                            <li><a class="dropdown-item" href="/profile/edit">Settings</a></li>
+                            <li><a class="dropdown-item" href="/profile">Profil</a></li>
+                            <li><a class="dropdown-item" href="/profile/edit">Inställningar</a></li>
 
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                            <li><a class="dropdown-item" href="/logout">Logga ut</a></li>
                         </ul>
                     </div>
                 <#else>
                     <div class="text-end">
-                        <a class="btn btn-light border px-4" href="/login">Logga in</a>
-                        <a class="btn btn-primary px-4" href="/register">Skapa konto</a>
+                        <a class="btn btn-light border px-md-4" href="/login">Logga in</a>
+                        <a class="btn btn-primary px-md-4" href="/register">Skapa konto</a>
                     </div>
                 </#if>
             </div>
@@ -97,7 +97,7 @@
     <div class="container">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
             <div class="col-md-4 d-flex align-items-center">
-                <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1 d-none d-md-inline-flex">
                     <svg class="bi" id="bootstrap" viewBox="0 0 118 94" width="30" height="24">
                         <title>Bootstrap</title>
                         <path fill-rule="evenodd" clip-rule="evenodd"
