@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.imagesource.ImageSourceEntity
+import se.ltu.student.models.imagesource.ImageSourceModel
 import se.ltu.student.models.imagesource.toModel
 import se.ltu.student.models.photographer.PhotographerEntity
 import se.ltu.student.models.photographer.toModel
@@ -28,7 +29,7 @@ fun Route.updatePhotographerRoute() {
             }
 
             val imageSources = transaction {
-                ImageSourceEntity.all().map(ImageSourceEntity::toModel)
+                ImageSourceEntity.all().map(ImageSourceEntity::toModel).sortedBy(ImageSourceModel::name)
             }
 
             call.respondFMT(

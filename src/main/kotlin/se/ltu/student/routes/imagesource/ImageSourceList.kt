@@ -6,12 +6,13 @@ import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.models.imagesource.ImageSourceEntity
+import se.ltu.student.models.imagesource.ImageSourceModel
 import se.ltu.student.models.imagesource.toModel
 
 fun Route.listImageSourcesRoute() {
     get {
         val imageSources = transaction {
-            ImageSourceEntity.all().map(ImageSourceEntity::toModel)
+            ImageSourceEntity.all().map(ImageSourceEntity::toModel).sortedBy(ImageSourceModel::name)
         }
 
         call.respondFMT(

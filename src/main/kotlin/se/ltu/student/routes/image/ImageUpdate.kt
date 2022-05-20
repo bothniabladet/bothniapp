@@ -10,12 +10,15 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import se.ltu.student.extensions.respondFMT
 import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.category.CategoryEntity
+import se.ltu.student.models.category.CategoryModel
 import se.ltu.student.models.category.toModel
 import se.ltu.student.models.image.ImageEntity
 import se.ltu.student.models.image.toModel
 import se.ltu.student.models.imagesource.ImageSourceEntity
+import se.ltu.student.models.imagesource.ImageSourceModel
 import se.ltu.student.models.imagesource.toModel
 import se.ltu.student.models.photographer.PhotographerEntity
+import se.ltu.student.models.photographer.PhotographerModel
 import se.ltu.student.models.photographer.toModel
 import se.ltu.student.plugins.UserNotification
 import se.ltu.student.routes.getIdOrFail
@@ -32,13 +35,13 @@ fun Route.updateImageRoute() {
             } ?: throw Error("Image not found.")
 
             val categories = transaction {
-                CategoryEntity.all().map(CategoryEntity::toModel)
+                CategoryEntity.all().map(CategoryEntity::toModel).sortedBy(CategoryModel::name)
             }
             val photographers = transaction {
-                PhotographerEntity.all().map(PhotographerEntity::toModel)
+                PhotographerEntity.all().map(PhotographerEntity::toModel).sortedBy(PhotographerModel::familyName)
             }
             val imageSources = transaction {
-                ImageSourceEntity.all().map(ImageSourceEntity::toModel)
+                ImageSourceEntity.all().map(ImageSourceEntity::toModel).sortedBy(ImageSourceModel::name)
             }
 
             call.respondFMT(

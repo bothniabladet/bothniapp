@@ -12,6 +12,7 @@ import se.ltu.student.models.category.CategoryEntity
 import se.ltu.student.models.category.CategoryModel
 import se.ltu.student.models.category.CategoryTable
 import se.ltu.student.models.image.ImageEntity
+import se.ltu.student.models.image.ImageModel
 import se.ltu.student.models.image.ImageTable
 import se.ltu.student.models.image.toModel
 import se.ltu.student.models.upload.ImageUploadTable
@@ -36,7 +37,7 @@ fun Route.categoryBySlugRoute() {
                     (ImageTable.category eq null) and (ImageTable.id notInSubQuery ImageUploadTable.slice(
                         ImageUploadTable.image
                     ).selectAll())
-                }.map(ImageEntity::toModel)
+                }.map(ImageEntity::toModel).sortedBy(ImageModel::caption)
             }
 
             return@get call.respondFMT(
