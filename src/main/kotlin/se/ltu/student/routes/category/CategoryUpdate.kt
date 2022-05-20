@@ -13,6 +13,7 @@ import se.ltu.student.models.category.CategoryEntity
 import se.ltu.student.models.category.toModel
 import se.ltu.student.plugins.UserNotification
 import se.ltu.student.routes.getIdOrFail
+import se.ltu.student.routes.redirectIfPossible
 
 fun Route.updateCategoryRoute() {
     route("/edit") {
@@ -22,7 +23,7 @@ fun Route.updateCategoryRoute() {
             val category = transaction {
                 CategoryEntity.findById(id)?.toModel() ?: throw Error("No such category.")
             }
-            call.respondFMT(FreeMarkerContent("config/category/edit.ftl", mapOf("category" to category)))
+            call.respondFMT(FreeMarkerContent("category/edit.ftl", mapOf("category" to category)))
         }
 
         post {
@@ -43,7 +44,8 @@ fun Route.updateCategoryRoute() {
 
             setVolatileNotification(UserNotification.success("Ändringar sparade."))
 
-            call.respondRedirect("/category")
+            if (!redirectIfPossible())
+                call.respondRedirect(call.request.uri.dropLast(5))
         }
     }
 }

@@ -8,6 +8,7 @@ import se.ltu.student.extensions.setVolatileNotification
 import se.ltu.student.models.category.CategoryEntity
 import se.ltu.student.plugins.UserNotification
 import se.ltu.student.routes.getIdOrFail
+import se.ltu.student.routes.redirectIfPossible
 
 fun Route.deleteCategoryRoute() {
     post("/delete") {
@@ -20,6 +21,7 @@ fun Route.deleteCategoryRoute() {
 
         setVolatileNotification(UserNotification.success("Kategori raderad."))
 
-        call.respondRedirect("/category")
+        if (!redirectIfPossible())
+            call.respondRedirect("/category")
     }
 }
