@@ -6,6 +6,10 @@ import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import se.ltu.student.plugins.UserSession
 
+/**
+ * This *really* isn't the way we'd like to do this.
+ * But it does what we need it to do.
+ */
 fun FreeMarkerContent.expand(injectedItems: Map<String, Any?>): FreeMarkerContent {
     val mutableMap: MutableMap<Any?, Any?> = mutableMapOf()
 
