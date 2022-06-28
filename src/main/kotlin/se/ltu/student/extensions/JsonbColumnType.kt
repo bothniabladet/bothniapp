@@ -8,6 +8,10 @@ import org.jetbrains.exposed.sql.statements.api.PreparedStatementApi
 import org.postgresql.util.PGobject
 import se.ltu.student.extensions.JsonbColumnType.Companion.JSONB
 
+/**
+ * Adapted from: https://gist.github.com/qoomon/70bbbedc134fd2a149f1f2450667dc9d
+ */
+
 class JsonbColumnType<T : Any>(
     private val stringify: (T) -> String,
     private val parse: (String) -> T
